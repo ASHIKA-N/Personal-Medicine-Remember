@@ -15,25 +15,36 @@ void reallc(int i=1){
     size=s;
     a=new int[s];
   }
+  ~Stack(){
+    delete[] a;
+  }
   void push(int v){
-    if(top==size-1){
+    if(isFull()){
       reallc();
     }
     a[++top]=v;
   }
   int pop(){
-    if(top==-1){
+    if(isEmpty()){
       cout<<"Stack Underflow";
       return -1;
     }
     return a[top--];
   }
   int peek(){
-    if(top==-1){
+    if(isEmpty()){
       cout<<"Stack Underflow";
       return -1;
     }
     return a[top];
+  }
+  bool isFull(){
+    return top==size-1;
+  }
+
+  bool isEmpty(){
+    return top==-1;
+  }
 };
 
 class Queue{
@@ -50,12 +61,23 @@ class Queue{
     front=rear=-1;
     a=new int[s];
   }
+  ~Queue(){
+    delete[] a;
+  }
   void enqueue(int v){
     if(front==(rear+1)%size){
       reallc();
       ;
     if(front==-1){
-    ;
+    ;}
+      bool isFull(){
+    return top==size-1;
+  }
+
+  bool isEmpty(){
+    return top==-1;
+  }
+    
     };
 
 
