@@ -35,6 +35,30 @@ void reallc(int i=1){
     }
     return a[top];
 };
+
+class Queue{
+  int *a;
+  int size;
+  int front,rear;
+  void reallc(int i=1){
+    a=(int*)realloc(a,(size+i)*sizeof(int));
+    size+=i;
+  }
+  public:
+  Queue(int s=5){
+    size=s;
+    front=rear=-1;
+    a=new int[s];
+  }
+  void enqueue(int v){
+    if(front==(rear+1)%size){
+      reallc();
+      ;
+    if(front==-1){
+    ;
+    };
+
+
     
     
     
