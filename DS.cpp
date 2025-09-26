@@ -103,7 +103,43 @@ class Queue{
   bool isEmpty(){
     return front==-1;
   }
-    
+class Node{
+public:
+int data;
+Node* next;
+Node* prev;
+};
+class linkedlist{
+  private:
+Node *head;
+public:
+linkedlist(){
+  head=NULL;
+}
+Node* insert(int val){
+  Node* new_node=(Node*)malloc((sizeof(Node));
+  new_node->data=val;
+  new_node->next=NULL;
+  if(head==NULL){
+    return new_node;
+  }
+  Node* temp=head;
+  while(temp!=NULL){
+    temp=temp->next;
+  }
+  temp->next=new_node;
+  return head;
+}
+void display(Node* head){
+  if(head==NULL){
+    return ;
+  }
+  while(head!=NULL){
+  cout<<head->data<<"\t";
+  head=head->next;
+  }
+}
+   
 };
 
 
