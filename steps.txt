@@ -1,0 +1,14 @@
+1.Chosen a topic "Personal medicine reminder "- which solves the major real world problem.
+2.Written a write up for the personal medicine reminder (refer-writeup.txt).
+3.Made collaborators @marcus abraham @dhayanithi @mokshit saran(team members).
+4.Created main.cpp(refer- main.cpp).
+5.Created person.cpp(refer-person.cpp)
+    To store the customers information.
+6.Created med.cpp(refer-med.cpp)
+   To store the details of the medicines.
+7.Created  DS.cpp(refer-DS.cpp)
+    For the implementation of:
+    1.stack
+    2.queue
+    3.linked list
+    
