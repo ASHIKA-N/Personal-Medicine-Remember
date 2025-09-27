@@ -13,12 +13,11 @@ struct med {
   string name;
   string dosage;
   Time t;
-
-  med(string& n,string& d, int h, int m) {
+med(string& n,string& d, int hour, int min) {
     name = n;
     dosage = d;
-    t.h = h;
-    t.m = m;
+    t.h = hour;
+    t.m = min;
   }
 };
   
