@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <vector>
 #include "Struct.hpp"
@@ -80,31 +81,23 @@ class Queue{
   }
 };
 
-struct Node{
-  med a;
-  Node* next,*prev;
-  Node(med m) : data(m), next(nullptr), prev(nullptr) {}
-};
+/* typedef struct Node{
+   med a;
+  struct Node* next,*prev;
+  struct Node(med m) : data(m), next(nullptr), prev(nullptr) {}
+}Node;
   
-/* class Node{
-  public:
-  int data;
-  Node* next;
-  Node* prev;
-};
-
-class linkedlist{
+ 
+ class doublylinkedlist{
   private:
 Node *head;
 public:
-linkedlist(){
-  head=NULL;
-}
+doublylinkedlist():head(nullptr){};
 Node* insert(int val){
   Node* new_node=(Node*)malloc((sizeof(Node));
   new_node->data=val;
   new_node->next=NULL;
-  if(head==NULL){
+  if(head==nullptr){
     return new_node;
   }
   Node* temp=head;
