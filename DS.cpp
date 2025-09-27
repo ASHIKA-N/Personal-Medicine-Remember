@@ -2,7 +2,7 @@
 #include <vector>
 #include "Struct.hpp"
 using namespace std;
-#include <cstdlib>
+#include <string>
 
 class Stack{
   vector<int> a;
@@ -43,30 +43,30 @@ class Stack{
 };
 
 class Queue{
-  vector<int> a;
+  vector<med> a;
   public:
   Queue(int s=0){
     if(s>0) a.reserve(s);
   }
 
-  void enqueue(int v){
+  void enqueue(med v){
     a.push_back(v);
   }
 
-  void dequeue(){
+  med dequeue(){
     if(isEmpty()){
       cout<<"Queue Underflow";
-      return -1;
+      return {"", "", {0, 0}};
     }
-    int v=a.front();
+    med v=a.front();
     a.erase(a.begin());
     return v;
   }
 
-  int peek(){
+  med peek(){
     if(isEmpty()){
       cout<<"Stack Underflow";
-      return -1;
+      return {"", "", {0, 0}};
     }
     return a.front();
   }
