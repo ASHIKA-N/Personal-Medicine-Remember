@@ -17,7 +17,7 @@ class Stack{
 
   int pop(){
     if(isEmpty()){
-      cout<<"Stack Underflow";
+      cout<<"Stack Underflow\n";
       return -1;
     }
     int v=a.back();
@@ -27,7 +27,7 @@ class Stack{
 
   int peek(){
     if(isEmpty()){
-      cout<<"Stack Underflow";
+      cout<<"Stack Underflow\n";
       return -1;
     }
     return a.back();
@@ -55,7 +55,7 @@ class Queue{
 
   med dequeue(){
     if(isEmpty()){
-      cout<<"Queue Underflow";
+      cout<<"Queue Underflow\n";
       return {"", "", {0, 0}};
     }
     med v=a.front();
@@ -65,14 +65,14 @@ class Queue{
 
   med peek(){
     if(isEmpty()){
-      cout<<"Stack Underflow";
+      cout<<"Queue Underflow\n";
       return {"", "", {0, 0}};
     }
     return a.front();
   }
 
   bool isEmpty(){
-    return size();
+    return size()==0;
   }
 
   int size(){
