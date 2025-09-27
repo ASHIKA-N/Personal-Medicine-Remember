@@ -5,30 +5,30 @@ using namespace std;
 #include <string>
 
 class Stack{
-  vector<int> a;
+  vector<med> a;
   public:
   Stack(int s=0){
     if(s>0) a.reserve(s);
   }
 
-  void push(int v){
+  void push(med v){
     a.push_back(v);
   }
 
-  int pop(){
+  med pop(){
     if(isEmpty()){
       cout<<"Stack Underflow\n";
-      return -1;
+      return {"", "", {0, 0}};
     }
-    int v=a.back();
+    med v=a.back();
     a.pop_back();
     return v;
   }
 
-  int peek(){
+  med peek(){
     if(isEmpty()){
       cout<<"Stack Underflow\n";
-      return -1;
+      return {"", "", {0, 0}};
     }
     return a.back();
   }
@@ -81,8 +81,9 @@ class Queue{
 };
 
 struct Node{
-    int a;
-    Node* next,*prev;
+  med a;
+  Node* next,*prev;
+  Node(med m) : data(m), next(nullptr), prev(nullptr) {}
 };
   
 /* class Node{
