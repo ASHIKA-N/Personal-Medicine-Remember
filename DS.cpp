@@ -1,114 +1,97 @@
 #include <iostream>
+#include <vector>
+#include "Struct.hpp"
 using namespace std;
 #include <cstdlib>
 
 class Stack{
-  int *a,size,top;
-void reallc(int i=1){
-  int *temp=new int[size+i];
-  for(int in=0;in<size;in++)
-    temp[i]=a[i];
-  delete[] a;
-  a=temp;
-  size+=i;
-}
+  vector<int> a;
   public:
-  Stack(int s=5){
-    top=-1;
-    size=s;
-    a=new int[s];
+  Stack(int s=0){
+    if(s>0) a.reserve(s);
   }
-  ~Stack(){
-    delete[] a;
-  }
+
   void push(int v){
-    if(isFull())
-      reallc(size);
-    a[++top]=v;
+    a.push_back(v);
   }
+
   int pop(){
     if(isEmpty()){
       cout<<"Stack Underflow";
       return -1;
     }
-    return a[top--];
+    int v=a.back();
+    a.pop_back();
+    return v;
   }
+
   int peek(){
     if(isEmpty()){
       cout<<"Stack Underflow";
       return -1;
     }
-    return a[top];
-  }
-  bool isFull(){
-    return top==size-1;
+    return a.back();
   }
 
   bool isEmpty(){
-    return top==-1;
+    return size()==0;
+  }
+
+  int size(){
+    return a.size();
   }
 };
 
 class Queue{
-  int *a;
-  int size;
-  int front,rear,count;
-  void reallc(int i=1){
-    int *temp=new int[size+i];
-    for(int in=0;in<size;in++)
-      temp[i]=a[i];
-    delete[] a;
-    a=temp;
-    size+=i;
-  }
+  vector<int> a;
   public:
-  Queue(int s=5){
-    count=0;
-    size=s;
-    front=rear=-1;
-    a=new int[size];
+  Queue(int s=0){
+    if(s>0) a.reserve(s);
   }
-  ~Queue(){
-    delete[] a;
-  }
+
   void enqueue(int v){
-    if(isFull())
-      reallc(size);
-    a[++rear]=v;
-    if(isEmpty())
-      ++front;
+    a.push_back(v);
   }
-  void deque(){
+
+  void dequeue(){
     if(isEmpty()){
       cout<<"Queue Underflow";
       return -1;
     }
-    if(front==rear) rear=-1;
-    int v=a[front++];
-    if(rear==-1) front=-1;
+    int v=a.front();
+    a.erase(a.begin());
     return v;
   }
+
   int peek(){
     if(isEmpty()){
       cout<<"Stack Underflow";
       return -1;
     }
-    return a[front];
-  }
-      
-  bool isFull(){
-    return front==(rear+1)%size;
+    return a.front();
   }
 
   bool isEmpty(){
-    return front==-1;
+    return size();
   }
-class Node{
-public:
-int data;
-Node* next;
-Node* prev;
+
+  int size(){
+    return a.size();
+  }
 };
+
+struct Node{
+    int a;
+    Node* next,*prev;
+};
+  
+/* class Node{
+  public:
+  int data;
+  Node* next;
+  Node* prev;
+};
+
 class linkedlist{
   private:
 Node *head;
@@ -140,7 +123,7 @@ void display(Node* head){
   }
 }
    
-};
+}; */
 
 
     
