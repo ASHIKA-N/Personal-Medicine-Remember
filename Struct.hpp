@@ -4,6 +4,9 @@ using namespace std;
 
 struct Time{
   int h,m;
+  int toMinutes() const {
+    return h * 60 + m;
+  }
 };
 
 struct med {
