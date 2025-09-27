@@ -11,4 +11,6 @@
     1.stack
     2.queue
     3.linked list
+8.Created Struct.hpp(Struct.hpp)
+      For defining the structure of medicine.
     
