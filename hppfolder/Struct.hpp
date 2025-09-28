@@ -22,6 +22,10 @@ struct Time{
   int toMinutes() const {
     return h * 60 + m;
   }
+
+  void disp(){
+    cout<<"Time:"<<h<<":"<<m<<endl;
+  }
 };
 
 struct Med {
@@ -38,6 +42,12 @@ struct Med {
     if(f<1 || f>7)
       f=7;
     fpw=f;
+  }
+
+  void disp(){
+    cout<<"Name:"<<name<<"\nDosage:"<<dosage<<"\nIntake ";
+    t.disp();
+    cout<<"Frequency per week:"<<fpw<<endl;
   }
 };
   
