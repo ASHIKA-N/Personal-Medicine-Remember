@@ -84,39 +84,15 @@ struct Node{
   Med a;
   Node* next,*prev;
   Node(Med m) : data(m), next(nullptr), prev(nullptr) {}
+  void disp(){
+    Node* t=this;
+    while(t){
+      cout<<t->a<<" ";
+      t=t->next;
+    }
+  }
 };
   
-/*
- class doublylinkedlist{
-  private:
-Node *head;
-public:
-doublylinkedlist():head(nullptr){};
-Node* insert(int val){
-  Node* new_node=(Node*)malloc((sizeof(Node));
-  new_node->data=val;
-  new_node->next=NULL;
-  if(head==nullptr){
-    return new_node;
-  }
-  Node* temp=head;
-  while(temp!=NULL){
-    temp=temp->next;
-  }
-  temp->next=new_node;
-  return head;
-}
-void display(Node* head){
-  if(head==NULL){
-    return ;
-  }
-  while(head!=NULL){
-  cout<<head->data<<"\t";
-  head=head->next;
-  }
-}
-   
-}; */
 
 
     
