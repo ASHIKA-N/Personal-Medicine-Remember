@@ -1,32 +1,31 @@
-
 #include <iostream>
 #include <vector>
-#include "Struct.hpp"
-using namespace std;
+#include "../hppfolder/Struct.hpp"
 #include <string>
+using namespace std;
 
 class Stack{
-  vector<med> a;
+  vector<Med> a;
   public:
   Stack(int s=0){
     if(s>0) a.reserve(s);
   }
 
-  void push(med v){
+  void push(Med v){
     a.push_back(v);
   }
 
-  med pop(){
+  Med pop(){
     if(isEmpty()){
       cout<<"Stack Underflow\n";
       return {"", "", {0, 0}};
     }
-    med v=a.back();
+    Med v=a.back();
     a.pop_back();
     return v;
   }
 
-  med peek(){
+  Med peek(){
     if(isEmpty()){
       cout<<"Stack Underflow\n";
       return {"", "", {0, 0}};
@@ -44,27 +43,27 @@ class Stack{
 };
 
 class Queue{
-  vector<med> a;
+  vector<Med> a;
   public:
   Queue(int s=0){
     if(s>0) a.reserve(s);
   }
 
-  void enqueue(med v){
+  void enqueue(Med v){
     a.push_back(v);
   }
 
-  med dequeue(){
+  Med dequeue(){
     if(isEmpty()){
       cout<<"Queue Underflow\n";
       return {"", "", {0, 0}};
     }
-    med v=a.front();
+    Med v=a.front();
     a.erase(a.begin());
     return v;
   }
 
-  med peek(){
+  Med peek(){
     if(isEmpty()){
       cout<<"Queue Underflow\n";
       return {"", "", {0, 0}};
@@ -81,13 +80,13 @@ class Queue{
   }
 };
 
-/* typedef struct Node{
-   med a;
-  struct Node* next,*prev;
-  struct Node(med m) : data(m), next(nullptr), prev(nullptr) {}
-}Node;
+struct Node{
+  Med a;
+  Node* next,*prev;
+  Node(Med m) : data(m), next(nullptr), prev(nullptr) {}
+};
   
- 
+/*
  class doublylinkedlist{
   private:
 Node *head;
