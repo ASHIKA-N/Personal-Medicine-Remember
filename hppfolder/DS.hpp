@@ -87,7 +87,7 @@ struct Node{
   void disp(){
     Node* t=this;
     while(t){
-      cout<<t->a<<" ";
+      cout<<t->a.disp();
       t=t->next;
     }
   }
