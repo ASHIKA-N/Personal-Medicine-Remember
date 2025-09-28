@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "../hppfolder/Struct.hpp"
+#include "Struct.hpp"
 #include <string>
 using namespace std;
 
