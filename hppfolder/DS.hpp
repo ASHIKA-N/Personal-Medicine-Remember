@@ -82,17 +82,52 @@ class Queue{
 
 struct Node{
   Med a;
-  Node* next,*prev;
-  Node(Med m) : data(m), next(nullptr), prev(nullptr) {}
-  void disp(){
-    Node* t=this;
-    while(t){
-      cout<<t->a.disp();
-      t=t->next;
+  Node *next;
+};
+
+struct LinkedList {
+  Node* head;
+
+  LinkedList() { head = nullptr; } 
+
+  void insert() {
+    Node* t = new Node;
+    cin.ignore();
+    cout << "Enter Name: ";
+    getline(cin, t->a.name);
+    cout << "Enter Dosage: ";
+    getline(cin, t->a.dosage);
+    cout << "Time (HH MM): ";
+    cin >> t->a.t.h >> t->a.t.m;
+    cout << "Frequency per week: ";
+    cin >> t->a.fpw;
+    t->next = nullptr;
+    if (head == nullptr) {
+      head = t;   
+    } else {
+      Node* r = head;
+      while (r->next != nullptr) {
+        r = r->next;
+      }
+      r->next = t;  
+    }
+  }
+
+  void display() {
+    Node* r = head;
+    if (!r) {
+      cout << "No medicines in the list.\n";
+      return;
+    }
+    while (r != nullptr) {
+      cout << "Name: " << r->a.name
+             << ", Dosage: " << r->a.dosage
+             << ", Time: " << r->a.t.h << ":" << r->a.t.m
+             << ", FPW: " << r->a.fpw << "\n";
+      r = r->next;
     }
   }
 };
-  
 
 
     
