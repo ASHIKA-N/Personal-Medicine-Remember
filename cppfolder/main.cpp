@@ -15,13 +15,16 @@ void menu(){
 
 int main(){
   int ch;
+  LinkedList L;
   while(1){
     menu();
     cin<<ch;
     switch(ch){
       case 1:
+      L.disp();
       break;
       case 2:
+      L.insert();
       break;
       case 3:
       break;
