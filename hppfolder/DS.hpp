@@ -87,6 +87,7 @@ struct Node{
 
 struct LinkedList {
   Node* head;
+  unordered_map<string, vector<Node*>> hash;
 
   LinkedList() { head = nullptr; } 
 
@@ -113,6 +114,7 @@ struct LinkedList {
     }
     t->next = r->next;
     r->next = t;  
+    hash[t->a.name].push_back(t);
   }
 
   void disp() {
@@ -182,6 +184,19 @@ struct LinkedList {
       } else {
         r = r->next;
       }
+    }
+  }
+
+  void search(const string& name) {
+    if (hash.find(name) == hash.end()) {
+      cout << "No medicine named \"" << name << "\" found.\n";
+      return;
+    }
+    for (Node* n : hash[name]) {
+      cout << "Found: " << n->a.name
+           << " | Dosage: " << n->a.dosage
+           << " | Time: " << n->a.t.h << ":" << n->a.t.m
+           << " | Freq/week: " << n->a.fpw << endl;
     }
   }
 };

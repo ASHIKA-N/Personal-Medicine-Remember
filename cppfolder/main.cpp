@@ -46,6 +46,12 @@ int main(){
       case 5:
       break;
       case 6:
+      string ns;
+      cout << "Enter Name to Search: ";
+      cin.ignore();
+      getline(cin, ns);
+      L.search(ns);     
+      break;
       case 7:
       return 0;
       default:
