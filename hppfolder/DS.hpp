@@ -102,18 +102,20 @@ struct LinkedList {
     cout << "Frequency per week: ";
     cin >> t->a.fpw;
     t->next = nullptr;
-    if (head == nullptr) {
-      head = t;   
-    } else {
-      Node* r = head;
-      while (r->next != nullptr) {
-        r = r->next;
-      }
-      r->next = t;  
+    if (head == nullptr || t->a.t < head->a.t) {
+      t->next=head;
+      head=t;
+      return;   
     }
+    Node* r = head;
+    while (r->next && !(t->a.t < r->next->a.t)) {
+      r = r->next;
+    }
+    t->next = r->next;
+    r->next = t;  
   }
 
-  void display() {
+  void disp() {
     Node* r = head;
     if (!r) {
       cout << "No medicines in the list.\n";
@@ -125,6 +127,61 @@ struct LinkedList {
              << ", Time: " << r->a.t.h << ":" << r->a.t.m
              << ", FPW: " << r->a.fpw << "\n";
       r = r->next;
+    }
+  }
+
+  void del(const string& medName, const Time& t) {
+    if (!head) {
+      cout << "List is empty!\n";
+      return;
+    }
+
+    if (head->a.name == medName && !(t < head->a.t) && !(head->a.t < t)) {
+      Node* temp = head;
+      head = head->next;
+      delete temp;
+      cout << medName << " at ";
+      t.disp();
+      cout << " deleted.\n";
+      return;
+    }
+
+    Node* r = head;
+    while (r->next && !(r->next->a.name == medName &&
+           !(t < r->next->a.t) && !(r->next->a.t < t))) {
+      r = r->next;
+    }
+
+    if (r->next) {
+      Node* temp = r->next;
+      r->next = r->next->next;
+      delete temp;
+      cout << medName << " at ";
+      t.disp();
+      cout << " deleted.\n";
+    } else {
+      cout << medName << " at ";
+      t.disp();
+      cout << " not found.\n";
+    }
+  }
+
+    void delAll(const string& medName) {
+    while (head && head->a.name == medName) {
+      Node* temp = head;
+      head = head->next;
+      delete temp;
+    }
+
+    Node* r = head;
+    while (r && r->next) {
+      if (r->next->a.name == medName) {
+        Node* temp = r->next;
+        r->next = r->next->next;
+        delete temp;
+      } else {
+        r = r->next;
+      }
     }
   }
 };

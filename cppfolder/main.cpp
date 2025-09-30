@@ -7,10 +7,11 @@ void menu(){
   cout<<"Choices\n";
   cout<<"1.View Med Schedule\n";
   cout<<"2.Insert New Med\n";
-  cout<<"3.Delete a Med\n";
-  cout<<"4.Alter a Med\n";
-  cout<<"5.Search for a Med\n";
-  cout<<"6.Exit\n";
+  cout<<"3.Delete a Med by Name and Time\n";
+  cout<<"4.Delete all Meds of a Particular Name\n";
+  cout<<"5.Alter a Med\n";
+  cout<<"6.Search for a Med\n";
+  cout<<"7.Exit\n";
 }
 
 int main(){
@@ -27,12 +28,25 @@ int main(){
       L.insert();
       break;
       case 3:
+      string n;
+      Time te;
+      cout<<"Enter Name and Time(H M):";
+      cin.ignore();
+      getline(cin,n);
+      cin>>te.h>>te.m;
+      L.del(n,te);
       break;
       case 4:
+      string na;
+      cout<<"Enter Name:";
+      cin.ignore();
+      getline(cin,na);
+      L.delAll(na);
       break;
       case 5:
       break;
       case 6:
+      case 7:
       return 0;
       default:
       cout<<"Invalid Choice, Try Again";

@@ -26,6 +26,10 @@ struct Time{
   void disp(){
     cout<<"Time:"<<h<<":"<<m<<endl;
   }
+
+  bool operator<(const Time& other) const {
+    return toMinutes() < other.toMinutes();
+  }
 };
 
 struct Med {
