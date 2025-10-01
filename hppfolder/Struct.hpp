@@ -82,8 +82,14 @@ struct Med {
     if(f<1 || f>7)
       f=7;
     fpw=f;
+    if(!Date::isValid(a,b,c)){
+      a=1;
+      b=1;
+      c=200;
+    }
     exp.d=a;
-    ex
+    exp.m=b;
+    exp.y=c;
   }
 
   void disp(){
