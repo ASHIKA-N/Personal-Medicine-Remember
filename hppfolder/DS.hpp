@@ -202,6 +202,7 @@ struct LinkedList {
       cout << "Found: " << n->a.name
            << " | Dosage: " << n->a.dosage
            << " | Time: " << n->a.t.h << ":" << n->a.t.m
+           << " | Expiry Date: "<<n->a.exp.d<<"/"<<n->a.exp.m<<"/"<<n->a.exp.y
            << " | Freq/week: " << n->a.fpw << endl;
     }
   }
