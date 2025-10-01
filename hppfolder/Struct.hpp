@@ -96,6 +96,8 @@ struct Med {
     cout<<"Name:"<<name<<"\nDosage:"<<dosage<<"\nIntake ";
     t.disp();
     cout<<"Frequency per week:"<<fpw<<endl;
+    cout<<"Expiry Date:";
+    exp.print();
   }
 };
   
