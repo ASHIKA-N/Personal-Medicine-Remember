@@ -3,6 +3,7 @@
 
 #include "../include/DS.hpp"
 #include "../include/Struct.hpp"
+
 using namespace std;
 
 void menu(){
@@ -20,6 +21,7 @@ void menu(){
 int main(){
   int ch;
   LinkedList L;
+  Queue SC;
   Time t;
   Med m;
   while(1){
@@ -49,14 +51,15 @@ int main(){
       L.delAll(na);
       break;
       case 5:
-      string old_name,new_med,dosag;
-      string option1,option2,option3,option4,op;
-      int h,m,fpw;
       while(1){
-        cout<<"Enter medicine name: ";
+        string option1,option2,option3,option4,op;
+        int h,m;
+        string old_med,new_med;
+        cout<<"Enter old medicine name : ";
         cin.ignore();
         getline(cin,old_name);
         if(!L.find(old_med)){
+          cout<<"Medicine not found";
           break;
         }
         cout<<"Do you want to change medicine name(yes/no): ";
@@ -64,21 +67,22 @@ int main(){
         cin>>option1;
         if(option1=="yes"){
         cout<<"Enter new medicine name: ";
-        cin.ignore();
         getline(cin,new_med);
         L.altermed_name(old_med,new_med);
-      }
-      cout<<"Do you want to change medicine time(yes/no): ";
-        cin.ignore();
-        cin>>option2;
-        if(option2=="yes"){
-        cout<<"Enter  medicine time\n ";
+        }
+        
+          
+          cout<<"Do you want to change medicine time(yes/no): ";
+          cin>>option2;
+          if(option2=="yes"){
+          cout<<"Enter medicine time: \n";
           cout<<"Enter hour: ";
           cin>>h;
           cout<<"Enter min: ";
           cin>>m;
           te.Time(h,m);
           L.altermed_time(old_name,h,m);
+        }
 
 }
  cout<<"Do you want to change dosage amount(yes/no): ";
@@ -104,6 +108,7 @@ int main(){
           break;
         }
     }
+  }
       
       break;
      case 6:
