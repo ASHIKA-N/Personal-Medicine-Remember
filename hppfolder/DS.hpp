@@ -241,8 +241,13 @@ if(found!=nullptr){
     found->a.t.h=hour;
     found->a.t.m=min;
   }
-  
- }
+  }
+  void altermed_dosage(const string& med_name,const string& dos){
+     Node *found=findmed_name(med_name);
+    if(found!=nullptr){
+    found->a.dosage=dos;
+    }
+  }
 };
 
 
