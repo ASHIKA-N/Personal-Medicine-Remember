@@ -196,7 +196,7 @@ struct LinkedList {
   void search(const string& name) {
     if (hash.find(name) == hash.end()) {
       cout << "No medicine named \"" << name << "\" found.\n";
-      return;
+      return ;
     }
     for (Node* n : hash[name]) {
       cout << "Found: " << n->a.name
@@ -206,6 +206,43 @@ struct LinkedList {
            << " | Freq/week: " << n->a.fpw << endl;
     }
   }
+  bool find(const string& name){
+    if (hash.find(name) == hash.end()) {
+      cout << "No medicine named \"" << name << "\" found.\n";
+      return false ;
+    }
+    else{
+      return true;
+    }
+  }
+  Node* findmed_name(const string& name){
+    Node *r= head;
+    if(!r){
+      return head;
+    }
+    
+    while(r!=nullptr ){
+      if(r->a.name!=name){
+        return r;
+      }
+      r=r->next;
+    }
+    
+  }
+  void altermed_name(const string& o_name,const string& n_name){
+    Node *found=findmed_name(o_name);
+    if(found!=nullptr){
+    found->a.name=n_name;
+    }
+  }
+ void altermed_time(const string& med_name,int hour,int min){
+Node* found=findmed_name(med_name);
+if(found!=nullptr){
+    found->a.t.h=hour;
+    found->a.t.m=min;
+  }
+  
+ }
 };
 
 

@@ -1,7 +1,8 @@
 #include <iostream>
 #include <cstdio>
-#include<ctime>
+
 #include "../include/DS.hpp"
+#include "../include/Struct.hpp"
 using namespace std;
 
 void menu(){
@@ -19,12 +20,18 @@ void altermed(){
 cout<<"Choices\n";
 cout<<"1.Alter medicine\n";
 cout<<"2.Alter medicine time\n";
-cout<<"3.Alter medicine and time\n";
+cout<<"3.Alter Dosage\n";
+cout<<"4.Alter medicine and medicine time\n";
+cout<<"5.Alter medcine and dosage\n";
+cout<<"6.Alter medicine time and dosage\n";
+cout<<"7.Alter medicine , medicine time and dosage\n";
 
 }
 int main(){
   int ch,ch1;
   LinkedList L;
+  Time t;
+  Med m;
   while(1){
     menu();
     cin<<ch;
@@ -58,21 +65,33 @@ int main(){
         case 1:
         string old_med,new_med;
         cout<<"Enter old medicine name : ";
+        cin.ignore();
         getline(cin,old_med);
-        cout<<"Enter new medicine name: ";
-        getline(cin,new_med);
-        string res=rename(old_med.c_str(),new_med.c_str());
+        if(!L.find(old_med)){
           break;
+        }
+        cout<<"Enter new medicine name: ";
+        cin.ignore();
+        getline(cin,new_med);
+        L.altermed_name(old_med,new_med);
+        break;
         case 2:
-          string med_name,date_time;
-          time_t upd_time;
-          struct tm tmStruct={};
+          string med_name;
+          int h,m;
+          
           cout<<"Enter medicine name: \n";
+          cin.ignore();
           cin>>med_name;
+          if(!L.find(med_name)){
+          break;
+        }
           cout<<"Enter medicine time: \n";
-          getline(cin,date_ime);
-          strptime(date_time.c_str(),"%Y-%m-%d %H:%M:%S",&tmStruct);
-          upd_time=mktime(&tmStruct);
+          cout<<"Enter hour: ";
+          cin>>h;
+          cout<<"Enter min: ";
+          cin>>m;
+          t.Time(h,m);
+          L.altermed_time(med_name,h,m);
           break;
           case 3:
           string ol_med,ne_med;
