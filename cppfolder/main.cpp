@@ -3,6 +3,7 @@
 
 #include "../include/DS.hpp"
 #include "../include/Struct.hpp"
+
 using namespace std;
 
 void menu(){
@@ -16,17 +17,18 @@ void menu(){
   cout<<"6.Search for a Med\n";
   cout<<"7.Exit\n";
 }
-void altermed(){
-cout<<"Choices\n";
-cout<<"1.Alter medicine\n";
-cout<<"2.Alter medicine time\n";
-cout<<"3.Alter Dosage\n";
-cout<<"4.Alter medicine and medicine time\n";
-cout<<"5.Alter medcine and dosage\n";
-cout<<"6.Alter medicine time and dosage\n";
-cout<<"7.Alter medicine , medicine time and dosage\n";
 
+void altermed(){
+  cout<<"Choices\n";
+  cout<<"1.Alter medicine\n";
+  cout<<"2.Alter medicine time\n";
+  cout<<"3.Alter Dosage\n";
+  cout<<"4.Alter medicine and medicine time\n";
+  cout<<"5.Alter medcine and dosage\n";
+  cout<<"6.Alter medicine time and dosage\n";
+  cout<<"7.Alter medicine , medicine time and dosage\n";
 }
+
 int main(){
   int ch,ch1;
   LinkedList L;
@@ -59,34 +61,35 @@ int main(){
       L.delAll(na);
       break;
       case 5:
-        altermed();
-        cin>>ch1;
-        switch(ch1){
+      altermed();
+      cin>>ch1;
+      switch(ch1){
         case 1:
         string old_med,new_med;
         cout<<"Enter old medicine name : ";
         cin.ignore();
         getline(cin,old_med);
         if(!L.find(old_med)){
+          cout<<"Medicine not found";
           break;
         }
         cout<<"Enter new medicine name: ";
-        cin.ignore();
         getline(cin,new_med);
         L.altermed_name(old_med,new_med);
         break;
         case 2:
-          string med_name;
-          int h,m;
+        string med_name;
+        int h,m;
           
-          cout<<"Enter medicine name: \n";
-          cin.ignore();
-          cin>>med_name;
-          if(!L.find(med_name)){
+        cout<<"Enter medicine name: \n";
+        cin.ignore();
+        getline(cin,med_name);
+        if(!L.find(med_name)){
+          cout<<"Medicine not found";
           break;
         }
-          cout<<"Enter medicine time: \n";
-          cout<<"Enter hour: ";
+        cout<<"Enter medicine time: \n";
+        cout<<"Enter hour: ";
           cin>>h;
           cout<<"Enter min: ";
           cin>>m;
