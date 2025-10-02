@@ -52,7 +52,7 @@ int main(){
       break;
       case 5:
       while(1){
-        string option1,option2,option3,option4,op;
+        string op;
         int h,m;
         string old_med,new_med;
         cout<<"Enter old medicine name : ";
@@ -64,8 +64,8 @@ int main(){
         }
         cout<<"Do you want to change medicine name(yes/no): ";
         cin.ignore();
-        cin>>option1;
-        if(option1=="yes"){
+        getline(cin,op);
+        if(op=="yes"){
         cout<<"Enter new medicine name: ";
         getline(cin,new_med);
         L.altermed_name(old_med,new_med);
@@ -73,8 +73,8 @@ int main(){
         
           
           cout<<"Do you want to change medicine time(yes/no): ";
-          cin>>option2;
-          if(option2=="yes"){
+          cin>>op;
+          if(op=="yes"){
           cout<<"Enter medicine time: \n";
           cout<<"Enter hour: ";
           cin>>h;
@@ -87,8 +87,8 @@ int main(){
 }
  cout<<"Do you want to change dosage amount(yes/no): ";
         cin.ignore();
-        cin>>option3;
-        if(option3=="yes"){
+        cin>>op;
+        if(op=="yes"){
         cout<<"Enter  dosage amount: ";
         cin.ignore();
         getline(cin,dosag);
@@ -96,8 +96,8 @@ int main(){
       }
       cout<<"Do you want to change number of days in a week(yes/no): ";
         cin.ignore();
-        cin>>option4;
-        if(option4=="yes"){
+        cin>>op;
+        if(op=="yes"){
         cout<<"Enter number of days: ";
         cin>>fpw;
         L.altermed_days(old_name,fpw);
