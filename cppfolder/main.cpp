@@ -32,6 +32,7 @@ void altermed(){
 int main(){
   int ch,ch1;
   LinkedList L;
+  Queue SC;
   Time t;
   Med m;
   while(1){
