@@ -248,6 +248,12 @@ if(found!=nullptr){
     found->a.dosage=dos;
     }
   }
+  void altermed_days(const string& med_name,int days){
+     Node *found=findmed_name(med_name);
+    if(found!=nullptr){
+    found->a.fpw=days;
+    }
+  }
 };
 
 
