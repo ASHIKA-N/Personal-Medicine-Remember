@@ -92,6 +92,7 @@ struct LinkedList {
   LinkedList() { head = nullptr; } 
 
   void insert() {
+    int c;
     Node* t = new Node;
     cin.ignore();
     cout << "Enter Name: ";
@@ -102,8 +103,22 @@ struct LinkedList {
     cin >> t->a.t.h >> t->a.t.m;
     cout<<"Expiry Date (DD MM YYYY):";
     cin>>t->a.exp.d>>t->a.exp.m>>t->a.exp.y;
-    cout << "Frequency per week: ";
-    cin >> t->a.fpw;
+    cout<<"Which days to take?\n1.certain days\n2.daily\n";
+    cin>>c;
+    if(c==1){
+      char o;
+      cout<<"It goes as 1-Monday and so on...\n";
+      for(int i=1;i<=7;i++){
+        cout<<"Day "<<i<<"? (y/n)";
+        cin>>o;
+        if(o=='y' || o=='Y')
+          t->a.dy.push_back(i);
+      }
+    }
+    else
+      for(i=1;i<=7;i++)
+        t->a.dy.push_back(i);
+
     t->next = nullptr;
     if (head == nullptr || t->a.t < head->a.t) {
       t->next=head;
@@ -126,14 +141,15 @@ struct LinkedList {
       return;
     }
     while (r != nullptr) {
-      cout << "Name: " << r->a.name
+      cout << "\nName: " << r->a.name
              << ", Dosage: " << r->a.dosage
              << ", Time: ";
       r->a.t.disp();
-
       cout<<", Expiry Date: ";
       r->a.exp.print();
-      cout<< ", FPW: " << r->a.fpw << "\n";
+      cout<< ", Days to consume(starts from monday): ";
+      for(int i:t->a.dy)
+        cout<<i<<" ";
       r = r->next;
     }
   }
@@ -199,11 +215,13 @@ struct LinkedList {
       return ;
     }
     for (Node* n : hash[name]) {
-      cout << "Found: " << n->a.name
+      cout << "\nFound: " << n->a.name
            << " | Dosage: " << n->a.dosage
            << " | Time: " << n->a.t.h << ":" << n->a.t.m
            << " | Expiry Date: "<<n->a.exp.d<<"/"<<n->a.exp.m<<"/"<<n->a.exp.y
-           << " | Freq/week: " << n->a.fpw << endl;
+           << " | Days in a week: ";
+      for(int i:t->a.dy)
+        cout<<i<<" ";
     }
   }
   bool find(const string& name){
