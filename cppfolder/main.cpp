@@ -51,65 +51,7 @@ int main(){
       L.delAll(na);
       break;
       case 5:
-      while(1){
-        string op;
-        int h,m;
-        string old_med,new_med;
-        cout<<"Enter old medicine name : ";
-        cin.ignore();
-        getline(cin,old_name);
-        if(!L.find(old_med)){
-          cout<<"Medicine not found";
-          break;
-        }
-        cout<<"Do you want to change medicine name(yes/no): ";
-        cin.ignore();
-        getline(cin,op);
-        if(op=="yes"){
-        cout<<"Enter new medicine name: ";
-        getline(cin,new_med);
-        L.altermed_name(old_med,new_med);
-        }
-        
-          
-          cout<<"Do you want to change medicine time(yes/no): ";
-          cin>>op;
-          if(op=="yes"){
-          cout<<"Enter medicine time: \n";
-          cout<<"Enter hour: ";
-          cin>>h;
-          cout<<"Enter min: ";
-          cin>>m;
-          te.Time(h,m);
-          L.altermed_time(old_name,h,m);
-        }
-
-}
- cout<<"Do you want to change dosage amount(yes/no): ";
-        cin.ignore();
-        cin>>op;
-        if(op=="yes"){
-        cout<<"Enter  dosage amount: ";
-        cin.ignore();
-        getline(cin,dosag);
-        L.altermed_dosage(old_name,dosag);
-      }
-      cout<<"Do you want to change number of days in a week(yes/no): ";
-        cin.ignore();
-        cin>>op;
-        if(op=="yes"){
-        cout<<"Enter number of days: ";
-        cin>>fpw;
-        L.altermed_days(old_name,fpw);
-      }
-      cout<<"Do u want to alter other medicine(yes/no):";
-      cin>>op;
-      if(op=="no"){
-          break;
-        }
-    }
-  }
-      
+      L.altermed();
       break;
      case 6:
       string ns;
