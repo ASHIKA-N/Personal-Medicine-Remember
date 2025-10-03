@@ -22,8 +22,8 @@ int main(){
   int ch;
   LinkedList L;
   Queue SC;
-  Time t;
-  Med m;
+  /* Time t;
+  Med m; */
   while(1){
     menu();
     cin<<ch;
@@ -53,7 +53,7 @@ int main(){
       case 5:
       L.altermed();
       break;
-     case 6:
+      case 6:
       string ns;
       cout << "Enter Name to Search: ";
       cin.ignore();
