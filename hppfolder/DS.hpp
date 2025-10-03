@@ -229,25 +229,101 @@ struct LinkedList {
     }
     
   }
-  void altermed_name(const string& o_name,const string& n_name){
-    Node *found=findmed_name(o_name);
-    if(found!=nullptr){
-    found->a.name=n_name;
+void altermed(){
+  while(1){
+    char op;
+    string old_med,new_med;
+    cout<<"Enter old medicine name : ";
+    cin.ignore();
+    getline(cin,old_name);
+    if(!L.find(old_med)){
+      cout<<"Medicine not found";
+      break;
+    }
+    cout<<"Do you want to change medicine name(y/n): ";
+    cin>>op;
+    if(op=='y' || op=='Y'){
+      cout<<"Enter new medicine name: ";
+      getline(cin,new_med);
+      L.altermed_name(old_med,new_med);
+    }
+    cout<<"Do you want to change medicine time(y/n): ";
+    cin>>op;
+    if(op=='y' || op=='Y'){
+      int h,m;
+      cout<<"Enter medicine time: \n";
+      cout<<"Enter hour: ";
+      cin>>h;
+      cout<<"Enter min: ";
+      cin>>m;
+      L.altermed_time(old_name,h,m);
+    }
+    cout<<"Do you want to change dosage amount(y/n): ";
+    cin>>op;
+    if(op=='y'|| op=='Y'){
+      string dosag;
+      cout<<"Enter dosage amount: ";
+      cin.ignore();
+      getline(cin,dosag);
+      L.altermed_dosage(old_name,dosag);
+    }
+    cout<<"Do you want to change number of days in a week(yes/no): ";
+    cin.ignore();
+    cin>>op;
+    if(op=="yes"){
+      cout<<"Enter number of days: ";
+      cin>>fpw;
+      L.altermed_days(old_name,fpw);
+    }
+    cout<<"Do u want to alter other medicine(yes/no):";
+    cin>>op;
+    if(op=="no"){
+      break;
     }
   }
- void altermed_time(const string& med_name,int hour,int min){
-Node* found=findmed_name(med_name);
-if(found!=nullptr){
-    found->a.t.h=hour;
-    found->a.t.m=min;
+}
+void altermed_name(const string& o_name,const string& n_name){
+  if (hash.find(o_name) == hash.end()) {
+    cout << "No medicine named \"" << o_name << "\" found.\n";
+    return ;
   }
+  for (Node* n : hash[o_name]) 
+    n->a.name=n_name;
+}
+void altermed_time(const string& med_name,int hour,int min){
+  char o;
+  if (hash.find(med_name) == hash.end()) {
+    cout << "No medicine named \"" << med_name << "\" found.\n";
+    return ;
   }
-  void altermed_dosage(const string& med_name,const string& dos){
-     Node *found=findmed_name(med_name);
-    if(found!=nullptr){
-    found->a.dosage=dos;
+  cout<<hash[med_name].size()<<" Meds found\n";
+  for (Node* n : hash[med_name]){
+    cout<<"Do you want to change this time? (y/n)\n";
+    n->a.t.disp();
+    cin>>o;
+    if(o=='y' || o=='Y'){
+      n->a.t.h=h;
+      n->a.t.m=m;
+      return;
     }
   }
+}
+void altermed_dosage(const string& med_name,const string& dos){
+  char o;
+  if (hash.find(med_name) == hash.end()) {
+    cout << "No medicine named \"" << med_name << "\" found.\n";
+    return ;
+  }
+  cout<<hash[med_name].size()<<" Meds found\n";
+  for (Node* n : hash[med_name]){
+    cout<<"Do you want to change this dosage? (y/n)\n";
+    n->a.dosage;
+    cin>>o;
+    if(o=='y' || o=='Y')
+      n->a.dosage=dos;
+  }
+      
+}
   void altermed_days(const string& med_name,int days){
      Node *found=findmed_name(med_name);
     if(found!=nullptr){
