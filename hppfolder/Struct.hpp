@@ -72,16 +72,16 @@ struct Med {
   string dosage;
   Time t;
   Date exp;
-  int fpw;
+  vector<int> dy;
 
-  Med(const string& n,const string& d, int hour, int min,int f,int a,int b,int c) {
+  Med(const string& n,const string& d, int hour, int min,vector<int> f,int a,int b,int c) {
     name = n;
     dosage = d;
     t.h = hour;
     t.m = min;
     if(f<1 || f>7)
       f=7;
-    fpw=f;
+    dy=f;
     if(!Date::isValid(a,b,c)){
       a=1;
       b=1;
@@ -95,8 +95,10 @@ struct Med {
   void disp(){
     cout<<"Name:"<<name<<"\nDosage:"<<dosage<<"\nIntake ";
     t.disp();
-    cout<<"Frequency per week:"<<fpw<<endl;
-    cout<<"Expiry Date:";
+    cout<<"Days to consume:";
+    for(int i=0;i<dy.size();i++)
+      cout<<dy[i]<<" ";
+    cout<<"\nExpiry Date:";
     exp.print();
   }
 };
