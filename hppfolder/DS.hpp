@@ -18,7 +18,7 @@ class Stack{
   Med pop(){
     if(isEmpty()){
       cout<<"Stack Underflow\n";
-      return {"", "", {0, 0},{0,0,0},0};
+      return {"", "", {0, 0},{0,0,0},{}};
     }
     Med v=a.back();
     a.pop_back();
@@ -28,7 +28,7 @@ class Stack{
   Med peek(){
     if(isEmpty()){
       cout<<"Stack Underflow\n";
-      return {"", "", {0, 0},{0,0,0},0};
+      return {"", "", {0, 0},{0,0,0},{}};
     }
     return a.back();
   }
@@ -56,7 +56,7 @@ class Queue{
   Med dequeue(){
     if(isEmpty()){
       cout<<"Queue Underflow\n";
-      return {"", "", {0, 0},{0,0,0},0};
+      return {"", "", {0, 0},{0,0,0},{}};
     }
     Med v=a.front();
     a.erase(a.begin());
@@ -66,7 +66,7 @@ class Queue{
   Med peek(){
     if(isEmpty()){
       cout<<"Queue Underflow\n";
-      return {"", "", {0, 0},{0,0,0},0};
+      return {"", "", {0, 0},{0,0,0},{}};
     }
     return a.front();
   }
