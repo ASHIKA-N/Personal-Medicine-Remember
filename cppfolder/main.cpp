@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../hppfolder/DS.hpp"
+#include "../hppfolder/Expiry.hpp"
 
 using namespace std;
 
@@ -19,9 +20,7 @@ int main(){
   int ch;
   LinkedList L;
   Queue SC;
-  /* Time t;
-  Med m; */
-  while(1){
+  do{
     menu();
     cin<<ch;
     switch(ch){
@@ -58,9 +57,18 @@ int main(){
       L.search(ns); 
       break;
       case 7:
-      return 0;
+      cout<<"Exiting\n";
+      break;
       default:
       cout<<"Invalid Choice, Try Again";
     }
+  }while(ch!=7);
+  int e;
+  cout<<"Enter no. of days to remind before expiry:";
+  cin>>e;
+  while(e<0){
+    cout<<"Cant be negative.Enter Again;";
+    cin>>e;
   }
+  expiry(&L,e);
 }
