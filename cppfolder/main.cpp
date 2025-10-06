@@ -1,8 +1,5 @@
 #include <iostream>
-#include <cstdio>
-
-#include "../include/DS.hpp"
-#include "../include/Struct.hpp"
+#include "../hppfolder/DS.hpp"
 
 using namespace std;
 
