@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <chrono>
 using namespace std;
 
 struct Time{
@@ -65,6 +66,14 @@ struct Date{
   void print() {
     cout << d << "/" << m << "/" << y << "\n";
   }
+
+  int operator -(Date &d){
+    using namespace std::chrono;
+    sys_days thisDate = year_month_day{year{year}, month{month}, day{day}};
+    sys_days otherDate = year_month_day{year{d.year}, month{d.month}, day{d.day}};
+    auto diff = thisDate - otherDate;
+    return diff.count();
+  } 
 };
 
 struct Med {
