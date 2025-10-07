@@ -5,30 +5,30 @@
 using namespace std;
 
 class Stack{
-  vector<Med> a;
+  vector<Action> a;
   public:
   Stack(int s=0){
     if(s>0) a.reserve(s);
   }
 
-  void push(Med v){
+  void push(Action v){
     a.push_back(v);
   }
 
-  Med pop(){
+  Action pop(){
     if(isEmpty()){
       cout<<"Stack Underflow\n";
-      return {"", "", {0, 0},{0,0,0},{}};
+      return Action();
     }
-    Med v=a.back();
+    Action v=a.back();
     a.pop_back();
     return v;
   }
 
-  Med peek(){
+  Action peek(){
     if(isEmpty()){
       cout<<"Stack Underflow\n";
-      return {"", "", {0, 0},{0,0,0},{}};
+      return Action();
     }
     return a.back();
   }
@@ -39,6 +39,10 @@ class Stack{
 
   int size(){
     return a.size();
+  }
+
+  void clear(){
+    a.clear();
   }
 };
 
@@ -56,7 +60,7 @@ class Queue{
   Med dequeue(){
     if(isEmpty()){
       cout<<"Queue Underflow\n";
-      return {"", "", {0, 0},{0,0,0},{}};
+      return Med();
     }
     Med v=a.front();
     a.erase(a.begin());
@@ -66,7 +70,7 @@ class Queue{
   Med peek(){
     if(isEmpty()){
       cout<<"Queue Underflow\n";
-      return {"", "", {0, 0},{0,0,0},{}};
+      return Med();
     }
     return a.front();
   }

@@ -20,9 +20,10 @@ int main(){
   int ch;
   LinkedList L;
   Queue SC;
+  Stack undo,redo;
   do{
     menu();
-    cin<<ch;
+    cin>>ch;
     switch(ch){
       case 1:
       L.disp();

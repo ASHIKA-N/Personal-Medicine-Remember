@@ -83,6 +83,14 @@ struct Med {
   Date exp;
   vector<int> dy;
 
+  Med() {
+    name = "";
+    dosage = "";
+    t = {0, 0};
+    exp = {0, 0, 0};
+    dy = {};
+  }
+
   Med(const string& n,const string& d, int hour, int min,vector<int> f,int a,int b,int c) {
     name = n;
     dosage = d;
@@ -111,4 +119,18 @@ struct Med {
     exp.print();
   }
 };
+
+struct Action{
+  char act;
+  int Npos;
+  Med OV;
+  Med NV;
+
+  Action(){
+    act='n';
+    Npos=-1;
+    OV=Med();
+    NV=Med();
+  }
+}
   
