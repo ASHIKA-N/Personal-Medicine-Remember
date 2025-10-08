@@ -35,4 +35,27 @@ Queue buildTodayQueue(const LinkedList &L) {
     cout << "\nToday's Medicines Enqueued: " << todayQ.size() << "\n";
     return todayQ;
 }
+void reminderCheck(Queue &todayQ) {
+    while (!todayQ.isEmpty()) {
+        Med m = todayQ.peek();
+        cout << "\nReminder: Time to take medicine " << m.name << " (" << m.dosage << ") at ";
+        m.t.disp();
 
+        char taken;
+        cout << "\nMark as taken (y/n)? ";
+        cin >> taken;
+        if (taken == 'y' || taken == 'Y') {
+            todayQ.dequeue();
+            cout << "Medicine marked as taken and removed from queue.\n";
+        } else {
+            cout << "Reminder skipped for now.\n";
+            break;
+        }
+    }
+
+    if (todayQ.isEmpty()) {
+        cout << "\nAll today's medicines are taken!\n";
+    } else {
+        cout << "\nPending medicines remaining: " << todayQ.size() << "\n";
+    }
+}
