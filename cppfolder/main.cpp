@@ -1,7 +1,6 @@
 #include <iostream>
 #include "../hppfolder/DS.hpp"
 #include "../hppfolder/Expiry.hpp"
-
 using namespace std;
 
 void menu(){
@@ -19,7 +18,7 @@ void menu(){
 int main(){
   int ch;
   LinkedList L;
-  Queue SC;
+  Queue todayQueue;
   Stack undo,redo;
   do{
     menu();
@@ -64,6 +63,8 @@ int main(){
       cout<<"Invalid Choice, Try Again";
     }
   }while(ch!=7);
+  Queue todayQ = buildTodayQueue(L);
+  reminderCheck(todayQ);
   int e;
   cout<<"Enter no. of days to remind before expiry:";
   cin>>e;
