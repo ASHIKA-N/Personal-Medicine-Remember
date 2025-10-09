@@ -8,9 +8,9 @@ void expiry(LinkedList* L,int e){
   auto today = floor<days>(system_clock::now());
   year_month_day ymd{today};
   Date currentDate;
-  currentDate.day   = static_cast<unsigned>(ymd.day());
-  currentDate.month = static_cast<unsigned>(ymd.month());
-  currentDate.year  = static_cast<int>(ymd.year());
+  currentDate.d   = static_cast<unsigned>(ymd.day());
+  currentDate.m = static_cast<unsigned>(ymd.month());
+  currentDate.y  = static_cast<int>(ymd.year());
   Node* n=L->head;
   while(n){
     if(n->a.exp-currentDate<=0){

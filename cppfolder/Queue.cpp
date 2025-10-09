@@ -36,6 +36,7 @@ Queue buildTodayQueue(const LinkedList &L) {
     return todayQ;
 }
 void reminderCheck(Queue &todayQ) {
+	cout << "\n--- Reminder Check ---\n";
     while (!todayQ.isEmpty()) {
         Med m = todayQ.peek();
         cout << "\nReminder: Time to take medicine " << m.name << " (" << m.dosage << ") at ";

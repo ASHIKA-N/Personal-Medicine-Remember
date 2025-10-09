@@ -57,6 +57,15 @@ int main(){
       L.search(ns); 
       break;
       case 7:
+      int e;
+      cout<<"\n---Expiry Check before Exit---\n";
+      cout<<"Enter no. of days to remind before expiry:";
+      cin>>e;
+      while(e<0){
+        cout<<"Cant be negative.Enter Again;";
+        cin>>e;
+      }
+      expiry(&L,e);
       cout<<"Exiting\n";
       break;
       default:
@@ -65,12 +74,5 @@ int main(){
   }while(ch!=7);
   Queue todayQ = buildTodayQueue(L);
   reminderCheck(todayQ);
-  int e;
-  cout<<"Enter no. of days to remind before expiry:";
-  cin>>e;
-  while(e<0){
-    cout<<"Cant be negative.Enter Again;";
-    cin>>e;
-  }
-  expiry(&L,e);
+  return 0;
 }

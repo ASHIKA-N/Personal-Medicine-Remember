@@ -1,6 +1,6 @@
-#pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include <chrono>
 using namespace std;
 
@@ -36,7 +36,7 @@ struct Time{
 struct Date{
   int d,m,y;
 
-  Date(int day, int month, int year) {
+  Date(int day=1, int month=1, int year=2000) {
     if (isValid(day, month, year)) {
       d = day;
       m = month;
@@ -67,10 +67,10 @@ struct Date{
     cout << d << "/" << m << "/" << y << "\n";
   }
 
-  int operator -(Date &d){
+  int operator -(const Date &dt){
     using namespace std::chrono;
-    sys_days thisDate = year_month_day{year{year}, month{month}, day{day}};
-    sys_days otherDate = year_month_day{year{d.year}, month{d.month}, day{d.day}};
+    sys_days thisDate = year_month_day{year{y}, month{m}, day{d}};
+    sys_days otherDate = year_month_day{year{dt.y}, month{dt.m}, day{dt.d}};
     auto diff = thisDate - otherDate;
     return diff.count();
   } 
@@ -87,7 +87,7 @@ struct Med {
     name = "";
     dosage = "";
     t = {0, 0};
-    exp = {0, 0, 0};
+    exp = {1, 1, 2000};
     dy = {};
   }
 
@@ -96,13 +96,12 @@ struct Med {
     dosage = d;
     t.h = hour;
     t.m = min;
-    if(f<1 || f>7)
-      f=7;
+    if (f.empty()) f = {1,2,3,4,5,6,7};
     dy=f;
     if(!Date::isValid(a,b,c)){
       a=1;
       b=1;
-      c=200;
+      c=2000;
     }
     exp.d=a;
     exp.m=b;
@@ -110,17 +109,15 @@ struct Med {
   }
 
   void disp(){
-    cout<<"Name:"<<name<<"\nDosage:"<<dosage<<"\nIntake ";
+	cout<<"Name:"<<name<<"\nDosage:"<<dosage<<"\nIntake ";
     t.disp();
-    cout<<"Days to consume:";
-    for(int i=0;i<dy.size();i++)
-      cout<<dy[i]<<" ";
-    cout<<"\nExpiry Date:";
-    exp.print();
+    cout << "\nDays to consume: ";
+	for (int d : dy) cout << d << " ";
+	cout << "\nExpiry Date: "; exp.print();
   }
 };
 
-struct Action{
+ /*struct Action{
   char act;
   int Npos;
   Med OV;
@@ -132,5 +129,5 @@ struct Action{
     OV=Med();
     NV=Med();
   }
-}
+}; */
   

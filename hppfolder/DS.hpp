@@ -2,6 +2,7 @@
 #include <vector>
 #include "Struct.hpp"
 #include <string>
+#include <unordered_map>
 using namespace std;
 
 class Stack{
@@ -44,7 +45,7 @@ class Stack{
   void clear(){
     a.clear();
   }
-};
+}; 
 
 class Queue{
   vector<Med> a;
@@ -120,13 +121,14 @@ struct LinkedList {
       }
     }
     else
-      for(i=1;i<=7;i++)
+      for(int i=1;i<=7;i++)
         t->a.dy.push_back(i);
 
     t->next = nullptr;
     if (head == nullptr || t->a.t < head->a.t) {
       t->next=head;
       head=t;
+      hash[t->a.name].push_back(t);
       return;   
     }
     Node* r = head;
@@ -152,7 +154,7 @@ struct LinkedList {
       cout<<", Expiry Date: ";
       r->a.exp.print();
       cout<< ", Days to consume(starts from monday): ";
-      for(int i:t->a.dy)
+      for(int i:r->a.dy)
         cout<<i<<" ";
       r = r->next;
     }
@@ -220,7 +222,7 @@ struct LinkedList {
            << " | Time: " << n->a.t.h << ":" << n->a.t.m
            << " | Expiry Date: "<<n->a.exp.d<<"/"<<n->a.exp.m<<"/"<<n->a.exp.y
            << " | Days in a week: ";
-      for(int i:t->a.dy)
+      for(int i:n->a.dy)
         cout<<i<<" ";
     }
   }
@@ -234,16 +236,15 @@ struct LinkedList {
       return true;
     }
   }
-    
-  }
+  
   void altermed(){
     while(1){
       char op;
-      string old_med,new_med;
+      string old_name,new_name;
       cout<<"Enter old medicine name : ";
       cin.ignore();
       getline(cin,old_name);
-      if(!L.find(old_med)){
+      if(!find(old_name)){
         cout<<"Medicine not found";
         break;
       }
@@ -251,8 +252,8 @@ struct LinkedList {
       cin>>op;
       if(op=='y' || op=='Y'){
         cout<<"Enter new medicine name: ";
-        getline(cin,new_med);
-        L.altermed_name(old_med,new_med);
+        getline(cin,new_name);
+        altermed_name(old_name,new_name);
       }
       cout<<"Do you want to change medicine time(y/n): ";
       cin>>op;
@@ -263,7 +264,7 @@ struct LinkedList {
         cin>>h;
         cout<<"Enter min: ";
         cin>>m;
-        L.altermed_time(old_name,h,m);
+        altermed_time(old_name,h,m);
       }
       cout<<"Do you want to change dosage amount(y/n): ";
       cin>>op;
@@ -272,16 +273,16 @@ struct LinkedList {
         cout<<"Enter dosage amount: ";
         cin.ignore();
         getline(cin,dosag);
-        L.altermed_dosage(old_name,dosag);
+        altermed_dosage(old_name,dosag);
       }
       cout<<"Do you want to change number of days in a week(yes/no): ";
       cin.ignore();
       cin>>op;
-      if(op=="yes")
-        L.altermed_days(old_name);
+      if(op=='y' || op=='y')
+        altermed_days(old_name);
       cout<<"Do u want to alter other medicine(y/n):";
       cin>>op;
-      if(op!='y' || op!='Y')
+      if(op!='y' && op!='Y')
         break;
     }
   }
@@ -307,8 +308,8 @@ struct LinkedList {
       n->a.t.disp();
       cin>>o;
       if(o=='y' || o=='Y'){
-        n->a.t.h=h;
-        n->a.t.m=m;
+        n->a.t.h=hour;
+        n->a.t.m=min;
         return;
       }
     }
@@ -322,8 +323,7 @@ struct LinkedList {
     }
     cout<<hash[med_name].size()<<" Meds found\n";
     for (Node* n : hash[med_name]){
-      cout<<"Do you want to change this dosage? (y/n)\n";
-      n->a.dosage;
+      cout<<"Do you want to change this dosage? (y/n)\n"<<n->a.dosage<<endl;
       cin>>o;
       if(o=='y' || o=='Y')
         n->a.dosage=dos;
@@ -332,6 +332,7 @@ struct LinkedList {
 
   void altermed_days(const string& med_name){
     char o;
+    int c;
     if (hash.find(med_name) == hash.end()) {
       cout << "No medicine named \"" << med_name << "\" found.\n";
       return ;
@@ -339,7 +340,7 @@ struct LinkedList {
     cout<<hash[med_name].size()<<" Meds found\n";
     for (Node* n : hash[med_name]){
       cout<<"Do you want to change this day set? (y/n)\n";
-      for(int i=0;i<n->a.dy.size();i)
+      for(int i=0;i<n->a.dy.size();i++)
         cout<<n->a.dy[i]<<" ";
       cin>>o;
       if(o=='y' || o=='Y'){
@@ -353,13 +354,22 @@ struct LinkedList {
             cout<<"Day "<<i<<"? (y/n)";
             cin>>o;
             if(o=='y' || o=='Y')
-              t->a.dy.push_back(i);
+              n->a.dy.push_back(i);
           }
         }
         else
-          for(i=1;i<=7;i++)
-            t->a.dy.push_back(i);
+          for(int i=1;i<=7;i++)
+            n->a.dy.push_back(i);
       }
     }
+  }
+  
+  ~LinkedList() {
+     Node* curr = head;
+     while (curr) {
+       Node* tmp = curr;
+       curr = curr->next;
+       delete tmp;
+     }
   } 
 };
