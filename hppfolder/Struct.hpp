@@ -117,7 +117,7 @@ struct Med {
   }
 };
 
- /*struct Action{
+struct Action{
   char act;
   int Npos;
   Med OV;
@@ -129,5 +129,5 @@ struct Med {
     OV=Med();
     NV=Med();
   }
-}; */
+}; 
   
