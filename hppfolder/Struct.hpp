@@ -1,11 +1,10 @@
 #pragma once
 #include <iostream>
 #include <string>
-using namespace std;
+using namespace std ;
 
 struct Time{
   int h,m;
-
   Time(int hour = 0, int min = 0) {
     if (hour >= 0 && hour < 24) h = hour;
     else {
@@ -23,7 +22,7 @@ struct Time{
     return h * 60 + m;
   }
 
-  void disp(){
+  void disp() const{
     cout<<"Time:"<<h<<":"<<m<<endl;
   }
 
@@ -34,6 +33,11 @@ struct Time{
 
 struct Date{
   int d,m,y;
+Date() {
+    d = 1;
+    m = 1;
+    y = 2000;
+}
 
   Date(int day, int month, int year) {
     if (isValid(day, month, year)) {
@@ -73,6 +77,14 @@ struct Med {
   Time t;
   Date exp;
   int fpw;
+Med() {
+    name = "";
+    dosage = "";
+    t.h = 0;
+    t.m = 0;
+    fpw = 0;
+    exp = Date(); 
+}
 
   Med(const string& n,const string& d, int hour, int min,int f,int a,int b,int c) {
     name = n;

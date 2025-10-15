@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstdio>
-
-#include "../include/DS.hpp"
-#include "../include/Struct.hpp"
+#include <string>
+#include "../hppfolder/DS.hpp"
+#include "../hppfolder/Struct.hpp"
 
 using namespace std;
 
@@ -26,7 +26,8 @@ int main(){
   Med m;
   while(1){
     menu();
-    cin<<ch;
+    cin>>ch;
+    string n,na;
     switch(ch){
       case 1:
       L.disp();
@@ -35,7 +36,7 @@ int main(){
       L.insert();
       break;
       case 3:
-      string n;
+      
       Time te;
       cout<<"Enter Name and Time(H M):";
       cin.ignore();
@@ -44,7 +45,7 @@ int main(){
       L.del(n,te);
       break;
       case 4:
-      string na;
+      
       cout<<"Enter Name:";
       cin.ignore();
       getline(cin,na);
@@ -70,9 +71,7 @@ int main(){
         getline(cin,new_med);
         L.altermed_name(old_med,new_med);
         }
-        
-          
-          cout<<"Do you want to change medicine time(yes/no): ";
+        cout<<"Do you want to change medicine time(yes/no): ";
           cin>>option2;
           if(option2=="yes"){
           cout<<"Enter medicine time: \n";
@@ -102,7 +101,7 @@ int main(){
         cin>>fpw;
         L.altermed_days(old_name,fpw);
       }
-      cout<<"Do u want to alter other medicine(yes/no):";
+      cout<<"Do u want to alter other medicine(yes/no): ";
       cin>>op;
       if(op=="no"){
           break;
