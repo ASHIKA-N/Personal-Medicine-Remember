@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdio>
 #include <string>
 #include "../hppfolder/DS.hpp"
 #include "../hppfolder/Struct.hpp"
