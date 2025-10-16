@@ -1,125 +1,110 @@
 #include <iostream>
-#include <string>
+#include <limits>
 #include "../hppfolder/DS.hpp"
-#include "../hppfolder/Struct.hpp"
+#include "../hppfolder/Expiry.hpp"
+#include "../hppfolder/Queue.hpp"
+#include "../hppfolder/Stack.hpp"
 
 using namespace std;
 
-void menu(){
-  cout<<"\n===Personal Medication Reminder===\n";
-  cout<<"Choices\n";
-  cout<<"1.View Med Schedule\n";
-  cout<<"2.Insert New Med\n";
-  cout<<"3.Delete a Med by Name and Time\n";
-  cout<<"4.Delete all Meds of a Particular Name\n";
-  cout<<"5.Alter a Med\n";
-  cout<<"6.Search for a Med\n";
-  cout<<"7.Exit\n";
+void menu() {
+    cout << "\n=== Personal Medication Reminder ===\n";
+    cout << "Choices\n";
+    cout << "1. View Med Schedule\n";
+    cout << "2. Insert New Med\n";
+    cout << "3. Delete a Med by Name and Time\n";
+    cout << "4. Delete all Meds of a Particular Name\n";
+    cout << "5. Alter a Med\n";
+    cout << "6. Search for a Med\n";
+    cout << "7. Undo Last Operation\n";
+    cout << "8. Redo Last Undone Operation\n";
+    cout << "9. Exit\n";
 }
 
-int main(){
-  int ch;
-  LinkedList L;
-  Queue SC;
-  Time t;
-  Med m;
-  while(1){
-    menu();
-    cin>>ch;
-    string n,na;
-    switch(ch){
-      case 1:
-      L.disp();
-      break;
-      case 2:
-      L.insert();
-      break;
-      case 3:
-      
-      Time te;
-      cout<<"Enter Name and Time(H M):";
-      cin.ignore();
-      getline(cin,n);
-      cin>>te.h>>te.m;
-      L.del(n,te);
-      break;
-      case 4:
-      
-      cout<<"Enter Name:";
-      cin.ignore();
-      getline(cin,na);
-      L.delAll(na);
-      break;
-      case 5:
-      while(1){
-        string option1,option2,option3,option4,op;
-        int h,m;
-        string old_med,new_med;
-        cout<<"Enter old medicine name : ";
-        cin.ignore();
-        getline(cin,old_name);
-        if(!L.find(old_med)){
-          cout<<"Medicine not found";
-          break;
-        }
-        cout<<"Do you want to change medicine name(yes/no): ";
-        cin.ignore();
-        cin>>option1;
-        if(option1=="yes"){
-        cout<<"Enter new medicine name: ";
-        getline(cin,new_med);
-        L.altermed_name(old_med,new_med);
-        }
-        cout<<"Do you want to change medicine time(yes/no): ";
-          cin>>option2;
-          if(option2=="yes"){
-          cout<<"Enter medicine time: \n";
-          cout<<"Enter hour: ";
-          cin>>h;
-          cout<<"Enter min: ";
-          cin>>m;
-          te.Time(h,m);
-          L.altermed_time(old_name,h,m);
-        }
+int main() {
+    int ch;
+    LinkedList L;
+    Queue todayQueue;
+    Stack undo, redo;
 
-}
- cout<<"Do you want to change dosage amount(yes/no): ";
-        cin.ignore();
-        cin>>option3;
-        if(option3=="yes"){
-        cout<<"Enter  dosage amount: ";
-        cin.ignore();
-        getline(cin,dosag);
-        L.altermed_dosage(old_name,dosag);
-      }
-      cout<<"Do you want to change number of days in a week(yes/no): ";
-        cin.ignore();
-        cin>>option4;
-        if(option4=="yes"){
-        cout<<"Enter number of days: ";
-        cin>>fpw;
-        L.altermed_days(old_name,fpw);
-      }
-      cout<<"Do u want to alter other medicine(yes/no): ";
-      cin>>op;
-      if(op=="no"){
-          break;
+    do {
+        menu();
+        cout << "Enter choice: ";
+        cin >> ch;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (ch) {
+            case 1:
+                L.disp();
+                break;
+
+            case 2:
+                if (!redo.empty()) redo.clear();
+                L.insert(undo);
+                break;
+
+            case 3: {
+                if (!redo.empty()) redo.clear();
+                string name;
+                int h, m;
+                cout << "Enter Name: ";
+                getline(cin, name);
+                cout << "Enter Time (HH MM): ";
+                cin >> h >> m;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                Time t(h, m);
+                L.del(name, t, undo);
+                break;
+            }
+
+            case 4: {
+                if (!redo.empty()) redo.clear();
+                string name;
+                cout << "Enter Name: ";
+                getline(cin, name);
+                L.delAll(name, undo);
+                break;
+            }
+
+            case 5:
+                if (!redo.empty()) redo.clear();
+                L.altermed(undo);
+                break;
+
+            case 6: {
+                string name;
+                cout << "Enter Name to Search: ";
+                getline(cin, name);
+                L.search(name);
+                break;
+            }
+
+            case 7:
+                Undo(undo, redo, L);
+                break;
+
+            case 8:
+                Redo(redo, undo, L);
+                break;
+
+            case 9: {
+                int days;
+                cout << "\n--- Expiry Check before Exit ---\n";
+                cout << "Enter no. of days to remind before expiry: ";
+                cin >> days;
+                while (days < 0) {
+                    cout << "Cannot be negative. Enter again: ";
+                    cin >> days;
+                }
+                expiry(&L, days);
+                Queue todayQ = buildTodayQueue(L);
+                reminderCheck(todayQ);
+                cout << "Exiting\n";
+                return 0;
+            }
+
+            default:
+                cout << "Invalid Choice, Try Again\n";
         }
-    }
-  }
-      
-      break;
-     case 6:
-      string ns;
-      cout << "Enter Name to Search: ";
-      cin.ignore();
-      getline(cin, ns);
-      L.search(ns); 
-      break;
-      case 7:
-      return 0;
-      default:
-      cout<<"Invalid Choice, Try Again";
-    }
-  }
+    } while (ch != 9);
 }

@@ -1,115 +1,100 @@
 #pragma once
 #include <iostream>
 #include <string>
-using namespace std ;
+#include <vector>
+#include <chrono>
+#include <algorithm>
+using namespace std;
+using namespace std::chrono;
 
-struct Time{
-  int h,m;
-  Time(int hour = 0, int min = 0) {
-    if (hour >= 0 && hour < 24) h = hour;
-    else {
-      cout << "Invalid hour! Setting to 0.\n";
-      h = 0;
+struct Time {
+    int h, m;
+
+    Time(int hour = 0, int min = 0) {
+        h = (hour >= 0 && hour < 24) ? hour : 0;
+        m = (min >= 0 && min < 60) ? min : 0;
     }
-    if (min >= 0 && min < 60) m = min;
-    else {
-      cout << "Invalid minute! Setting to 0.\n";
-      m = 0;
-    }
-  }
 
-  int toMinutes() const {
-    return h * 60 + m;
-  }
+    int toMinutes() const { return h * 60 + m; }
 
-  void disp() const{
-    cout<<"Time:"<<h<<":"<<m<<endl;
-  }
+    void disp() const { printf("%02d:%02d", h, m); }
 
-  bool operator<(const Time& other) const {
-    return toMinutes() < other.toMinutes();
-  }
+    bool operator<(const Time& other) const { return toMinutes() < other.toMinutes(); }
+    bool operator<=(const Time& other) const { return toMinutes() <= other.toMinutes(); }
+    bool operator==(const Time& other) const { return toMinutes() == other.toMinutes(); }
 };
 
-struct Date{
-  int d,m,y;
-Date() {
-    d = 1;
-    m = 1;
-    y = 2000;
-}
+struct Date {
+    int d, m, y;
 
-  Date(int day, int month, int year) {
-    if (isValid(day, month, year)) {
-      d = day;
-      m = month;
-      y = year;
-    } else {
-      cout << "Invalid date! Setting default 1/1/2000\n";
-      d = 1;
-      m = 1;
-      y = 2000;
+    Date(int day = 1, int month = 1, int year = 2000) {
+        if (isValid(day, month, year)) { d = day; m = month; y = year; }
+        else { d = 1; m = 1; y = 2000; }
     }
-  }
 
-  static bool isValid(int day, int month, int year) {
-    if (year < 1) return false;
-    if (month < 1 || month > 12) return false;
+    static bool isValid(int day, int month, int year) {
+        if (year < 1 || month < 1 || month > 12) return false;
+        int daysInMonth[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+        bool leap = (year % 400 == 0) || (year % 100 != 0 && year % 4 == 0);
+        if (leap) daysInMonth[2] = 29;
+        return day >= 1 && day <= daysInMonth[month];
+    }
 
-    int daysInMonth[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+    void print() const { printf("%02d/%02d/%04d", d, m, y); }
 
-    bool leap = (year % 400 == 0) || (year % 100 != 0 && year % 4 == 0);
-    if (leap) daysInMonth[2] = 29;
+    int operator-(const Date &dt) const {
+        sys_days thisDate{year{y}, month{m}, day{d}};
+        sys_days otherDate{year{dt.y}, month{dt.m}, day{dt.d}};
+        return (thisDate - otherDate).count();
+    }
 
-    if (day < 1 || day > daysInMonth[month]) return false;
-
-    return true;
-  }
-
-  void print() {
-    cout << d << "/" << m << "/" << y << "\n";
-  }
+    bool operator<=(const Date &other) const { return (*this - other) <= 0; }
 };
 
 struct Med {
-  string name;
-  string dosage;
-  Time t;
-  Date exp;
-  int fpw;
-Med() {
-    name = "";
-    dosage = "";
-    t.h = 0;
-    t.m = 0;
-    fpw = 0;
-    exp = Date(); 
-}
+    string name;
+    string dosage;
+    int qty;
+    Time t;
+    Date exp;
+    vector<int> dy;
 
-  Med(const string& n,const string& d, int hour, int min,int f,int a,int b,int c) {
-    name = n;
-    dosage = d;
-    t.h = hour;
-    t.m = min;
-    if(f<1 || f>7)
-      f=7;
-    fpw=f;
-    if(!Date::isValid(a,b,c)){
-      a=1;
-      b=1;
-      c=200;
+    Med() : name(""), dosage(""), qty(0), t(0,0), exp(1,1,2000), dy({}) {}
+
+    Med(const string& n, const string& d, int hour, int min, vector<int> f, int day, int month, int year, int q) {
+        name = n;
+        dosage = d;
+        t = Time(hour, min);
+        qty = q;
+        dy = f.empty() ? vector<int>{1,2,3,4,5,6,7} : f;
+        exp = Date(isValid(day, month, year) ? day : 1,
+                   isValid(day, month, year) ? month : 1,
+                   isValid(day, month, year) ? year : 2000);
     }
-    exp.d=a;
-    exp.m=b;
-    exp.y=c;
-  }
 
-  void disp(){
-    cout<<"Name:"<<name<<"\nDosage:"<<dosage<<"\nIntake ";
-    t.disp();
-    cout<<"Frequency per week:"<<fpw<<endl;
-    cout<<"Expiry Date:";
-    exp.print();
-  }
+    void disp() const {
+        cout << "\n-----------------\n";
+        cout << "Name: " << name << "\nDosage: " << dosage << "\nIntake Time: ";
+        t.disp();
+        cout << "\nDays to consume: ";
+        for (int d : dy) cout << d << " ";
+        cout << "\nQuantity: " << qty;
+        cout << "\nExpiry Date: "; exp.print();
+        cout << "\n-----------------\n";
+    }
+
+    bool operator==(const Med& other) const {
+        return name == other.name && t == other.t;
+    }
 };
+
+struct Action {
+    char act;       
+    Med OV;        
+    Med NV;        
+    vector<Med> group;
+
+    Action() : act('n'), OV(Med()), NV(Med()) {}
+};
+
   

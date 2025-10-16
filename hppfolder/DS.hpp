@@ -1,270 +1,278 @@
+#pragma once
 #include <iostream>
 #include <vector>
-#include <unordered_map>
-#include "Struct.hpp"
 #include <string>
+#include <unordered_map>
+#include <algorithm>
+#include "Struct.hpp"
+
 using namespace std;
 
-class Stack{
-  vector<Med> a;
-  public:
-  Stack(int s=0){
-    if(s>0) a.reserve(s);
-  }
-
-  void push(Med v){
-    a.push_back(v);
-  }
-
-  Med pop(){
-    if(isEmpty()){
-      cout<<"Stack Underflow\n";
-      return Med("", "", 0, 0, 0, 0, 0, 0);
-
+class Stack {
+    vector<Action> a;
+public:
+    Stack(int s = 0) {
+        if (s > 0) a.reserve(s);
     }
-    Med v=a.back();
-    a.pop_back();
-    return v;
-  }
 
-  Med peek(){
-    if(isEmpty()){
-      cout<<"Stack Underflow\n";
-      return Med("", "", 0, 0, 0, 0, 0, 0);
+    void push(const Action &v) { a.push_back(v); }
 
+    Action pop() {
+        if (empty()) {
+            cout << "Stack Underflow\n";
+            return Action();
+        }
+        Action v = a.back();
+        a.pop_back();
+        return v;
     }
-    return a.back();
-  }
 
-  bool isEmpty(){
-    return size()==0;
-  }
+    Action peek() {
+        if (empty()) {
+            cout << "Stack Underflow\n";
+            return Action();
+        }
+        return a.back();
+    }
 
-  int size(){
-    return a.size();
-  }
+    bool empty() const { return a.empty(); }
+    int size() const { return a.size(); }
+    void clear() { a.clear(); }
 };
 
-class Queue{
-  vector<Med> a;
-  public:
-  Queue(int s=0){
-    if(s>0) a.reserve(s);
-  }
+class Queue {
+    vector<Med> a;
+public:
+    Queue(int s = 0) { if (s > 0) a.reserve(s); }
 
-  void enqueue(Med v){
-    a.push_back(v);
-  }
+    void enqueue(const Med &v) { a.push_back(v); }
 
-  Med dequeue(){
-    if(isEmpty()){
-      cout<<"Queue Underflow\n";
-      return Med("", "", 0, 0, 0, 0, 0, 0);
-
+    Med dequeue() {
+        if (empty()) {
+            cout << "Queue Underflow\n";
+            return Med();
+        }
+        Med v = a.front();
+        a.erase(a.begin());
+        return v;
     }
-    Med v=a.front();
-    a.erase(a.begin());
-    return v;
-  }
 
-  Med peek(){
-    if(isEmpty()){
-      cout<<"Queue Underflow\n";
-      return Med("", "", 0, 0, 0, 0, 0, 0);
-
+    Med peek() {
+        if (empty()) {
+            cout << "Queue Underflow\n";
+            return Med();
+        }
+        return a.front();
     }
-    return a.front();
-  }
 
-  bool isEmpty(){
-    return size()==0;
-  }
-
-  int size(){
-    return a.size();
-  }
+    bool empty() const { return a.empty(); }
+    int size() const { return a.size(); }
 };
 
-struct Node{
-  Med a;
-  Node *next;
- 
-
+struct Node {
+    Med a;
+    Node* next;
 };
 
 struct LinkedList {
-  Node* head;
-  unordered_map<string, vector<Node*>> hash;
+    Node* head;
+    unordered_map<string, vector<Node*>> hash;
 
-  LinkedList() { head = nullptr; } 
+    LinkedList() : head(nullptr) {}
 
-  void insert() {
-    Node* t = new Node;
-    cin.ignore();
-    cout << "Enter Name: ";
-    getline(cin, t->a.name);
-    cout << "Enter Dosage: ";
-    getline(cin, t->a.dosage);
-    cout << "Time (HH MM): ";
-    cin >> t->a.t.h >> t->a.t.m;
-    cout<<"Expiry Date (DD MM YYYY):";
-    cin>>t->a.exp.d>>t->a.exp.m>>t->a.exp.y;
-    cout << "Frequency per week: ";
-    cin >> t->a.fpw;
-    t->next = nullptr;
-    if (head == nullptr || t->a.t < head->a.t) {
-      t->next=head;
-      head=t;
-      return;   
-    }
-    Node* r = head;
-    while (r->next && !(t->a.t < r->next->a.t)) {
-      r = r->next;
-    }
-    t->next = r->next;
-    r->next = t;  
-    hash[t->a.name].push_back(t);
-  }
-
-  void disp() {
-    Node* r = head;
-    if (!r) {
-      cout << "No medicines in the list.\n";
-      return;
-    }
-    while (r != nullptr) {
-      cout << "Name: " << r->a.name
-             << ", Dosage: " << r->a.dosage
-             << ", Time: ";
-      r->a.t.disp();
-
-      cout<<", Expiry Date: ";
-      r->a.exp.print();
-      cout<< ", FPW: " << r->a.fpw << "\n";
-      r = r->next;
-    }
-  }
-
-  void del(const string& medName, const Time& t) {
-    if (!head) {
-      cout << "List is empty!\n";
-      return;
+    ~LinkedList() {
+        Node* curr = head;
+        while (curr) {
+            Node* tmp = curr;
+            curr = curr->next;
+            delete tmp;
+        }
     }
 
-    if (head->a.name == medName && !(t < head->a.t) && !(head->a.t < t)) {
-      Node* temp = head;
-      head = head->next;
-      delete temp;
-      cout << medName << " at ";
-      t.disp();
-      cout << " deleted.\n";
-      return;
+    void insert(Stack &u) {
+        Action a;
+        a.act = 'i';
+        Node* t = new Node;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Enter Name: ";
+        getline(cin, t->a.name);
+        cout << "Enter Dosage: ";
+        getline(cin, t->a.dosage);
+        cout << "Time (HH MM): ";
+        cin >> t->a.t.h >> t->a.t.m;
+
+        cout << "Expiry Date (DD MM YYYY): ";
+        cin >> t->a.exp.d >> t->a.exp.m >> t->a.exp.y;
+
+        int c;
+        cout << "Which days to take?\n1.certain days\n2.daily\n";
+        cin >> c;
+
+        t->a.dy.clear();
+        if (c == 1) {
+            char o;
+            cout << "It goes as 1-Monday ... 7-Sunday\n";
+            for (int i = 1; i <= 7; i++) {
+                cout << "Day " << i << "? (y/n): ";
+                cin >> o;
+                if (o == 'y' || o == 'Y') t->a.dy.push_back(i);
+            }
+        } else {
+            for (int i = 1; i <= 7; i++) t->a.dy.push_back(i);
+        }
+
+        t->next = nullptr;
+        if (!head || t->a.t < head->a.t) {
+            t->next = head;
+            head = t;
+        } else {
+            Node* r = head;
+            while (r->next && !(t->a.t < r->next->a.t)) r = r->next;
+            t->next = r->next;
+            r->next = t;
+        }
+
+        hash[t->a.name].push_back(t);
+        a.NV = t->a;
+        u.push(a);
     }
 
-    Node* r = head;
-    while (r->next && !(r->next->a.name == medName &&
-           !(t < r->next->a.t) && !(r->next->a.t < t))) {
-      r = r->next;
+    void disp() {
+        if (!head) { cout << "No medicines in the list.\n"; return; }
+        Node* r = head;
+        while (r) {
+            r->a.disp();
+            r = r->next;
+        }
     }
 
-    if (r->next) {
-      Node* temp = r->next;
-      r->next = r->next->next;
-      delete temp;
-      cout << medName << " at ";
-      t.disp();
-      cout << " deleted.\n";
-    } else {
-      cout << medName << " at ";
-      t.disp();
-      cout << " not found.\n";
-    }
-  }
+    void del(const string& medName, const Time& t, Stack &u) {
+        if (!head) { cout << "List is empty!\n"; return; }
+        Action a; a.act = 'd';
 
-    void delAll(const string& medName) {
-    while (head && head->a.name == medName) {
-      Node* temp = head;
-      head = head->next;
-      delete temp;
+        if (head->a.name == medName && t == head->a.t) {
+            Node* temp = head;
+            head = head->next;
+            a.OV = temp->a;
+            delete temp;
+            cout << medName << " at "; t.disp(); cout << " deleted.\n";
+            u.push(a);
+            return;
+        }
+
+        Node* r = head;
+        while (r->next && !(r->next->a.name == medName && t == r->next->a.t)) r = r->next;
+
+        if (r->next) {
+            Node* temp = r->next;
+            r->next = temp->next;
+            a.OV = temp->a;
+            delete temp;
+            cout << medName << " at "; t.disp(); cout << " deleted.\n";
+            u.push(a);
+        } else {
+            cout << medName << " at "; t.disp(); cout << " not found.\n";
+        }
     }
 
-    Node* r = head;
-    while (r && r->next) {
-      if (r->next->a.name == medName) {
-        Node* temp = r->next;
-        r->next = r->next->next;
-        delete temp;
-      } else {
-        r = r->next;
-      }
-    }
-  }
+    void delAll(const string& medName, Stack &u) {
+        Action c; c.act = 'a';
+        while (head && head->a.name == medName) {
+            Node* temp = head;
+            head = head->next;
+            c.OV = temp->a;
+            u.push(c);
+            delete temp;
+        }
 
-  void search(const string& name) {
-    if (hash.find(name) == hash.end()) {
-      cout << "No medicine named \"" << name << "\" found.\n";
-      return ;
+        Node* r = head;
+        while (r && r->next) {
+            if (r->next->a.name == medName) {
+                Node* temp = r->next;
+                r->next = temp->next;
+                c.OV = temp->a;
+                u.push(c);
+                delete temp;
+            } else {
+                r = r->next;
+            }
+        }
     }
-    for (Node* n : hash[name]) {
-      cout << "Found: " << n->a.name
-           << " | Dosage: " << n->a.dosage
-           << " | Time: " << n->a.t.h << ":" << n->a.t.m
-           << " | Expiry Date: "<<n->a.exp.d<<"/"<<n->a.exp.m<<"/"<<n->a.exp.y
-           << " | Freq/week: " << n->a.fpw << endl;
+
+    void search(const string& name) {
+        if (hash.find(name) == hash.end()) {
+            cout << "No medicine named \"" << name << "\" found.\n";
+            return;
+        }
+        for (Node* n : hash[name]) {
+            cout << "\nFound: " << n->a.name
+                 << " | Dosage: " << n->a.dosage
+                 << " | Time: "; n->a.t.disp();
+            cout << " | Expiry: "; n->a.exp.print();
+            cout << " | Days: ";
+            for (int d : n->a.dy) cout << d << " ";
+        }
     }
-  }
-  bool find(const string& name){
-    if (hash.find(name) == hash.end()) {
-      cout << "No medicine named \"" << name << "\" found.\n";
-      return false ;
+
+    bool find(const string& name) {
+        return hash.find(name) != hash.end();
     }
-    else{
-      return true;
+
+    void altermed(Stack &u) {
+        Action c; c.act = 'u';
+        Node* r = head;
+        while (r) {
+            r->a.disp();
+            char op;
+            cout << "Do you want to change any details? (y/n): ";
+            cin >> op;
+            cin.ignore();
+
+            if (op != 'y' && op != 'Y') { r = r->next; continue; }
+
+            c.OV = r->a;
+
+            cout << "Change medicine name? (y/n): "; cin >> op; cin.ignore();
+            if (op == 'y' || op == 'Y') {
+                cout << "Enter new name: ";
+                getline(cin, r->a.name);
+            }
+
+            cout << "Change time? (y/n): "; cin >> op;
+            if (op == 'y' || op == 'Y') { cout << "Enter hour and min: "; cin >> r->a.t.h >> r->a.t.m; }
+
+            cout << "Change dosage? (y/n): "; cin >> op; cin.ignore();
+            if (op == 'y' || op == 'Y') { cout << "Enter dosage: "; getline(cin, r->a.dosage); }
+
+            cout << "Change days? (y/n): "; cin >> op;
+            if (op == 'y' || op == 'Y') {
+                r->a.dy.clear();
+                int c; cout << "1.Certain days 2.Daily: "; cin >> c;
+                if (c == 1) {
+                    char o;
+                    for (int i = 1; i <= 7; i++) {
+                        cout << "Day " << i << "? (y/n): ";
+                        cin >> o;
+                        if (o == 'y' || o == 'Y') r->a.dy.push_back(i);
+                    }
+                } else {
+                    for (int i = 1; i <= 7; i++) r->a.dy.push_back(i);
+                }
+            }
+
+            cout << "Change quantity? (y/n): "; cin >> op;
+            if (op == 'y' || op == 'Y') { cout << "Enter new quantity: "; cin >> r->a.qty; }
+
+            cout << "Change expiry date? (y/n): "; cin >> op;
+            if (op == 'y' || op == 'Y') {
+                int d, m, y; cout << "Day Month Year: "; cin >> d >> m >> y;
+                r->a.exp = Date(Date::isValid(d,m,y) ? d:1, Date::isValid(d,m,y) ? m:1, Date::isValid(d,m,y) ? y:2000);
+            }
+
+            c.NV = r->a;
+            u.push(c);
+            r = r->next;
+        }
     }
-  }
-  Node* findmed_name(const string& name){
-    Node *r= head;
-    if(!r){
-      return head;
-    }
-    
-    while(r!=nullptr ){
-      if(r->a.name!=name){
-        return r;
-      }
-      r=r->next;
-    }
-    
-  }
-  void altermed_name(const string& o_name,const string& n_name){
-    Node *found=findmed_name(o_name);
-    if(found!=nullptr){
-    found->a.name=n_name;
-    }
-  }
- void altermed_time(const string& med_name,int hour,int min){
-Node* found=findmed_name(med_name);
-if(found!=nullptr){
-    found->a.t.h=hour;
-    found->a.t.m=min;
-  }
-  }
-  void altermed_dosage(const string& med_name,const string& dos){
-     Node *found=findmed_name(med_name);
-    if(found!=nullptr){
-    found->a.dosage=dos;
-    }
-  }
-  void altermed_days(const string& med_name,int days){
-     Node *found=findmed_name(med_name);
-    if(found!=nullptr){
-    found->a.fpw=days;
-    }
-  }
-  
 };
-
-
-    
-    
-    
