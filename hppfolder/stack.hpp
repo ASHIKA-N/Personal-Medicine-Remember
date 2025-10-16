@@ -45,9 +45,9 @@ struct LinkedList {
         if (!items.empty()) items.pop_back();
     }
     void print() const {
-        cout << "[ ";
-        for (const auto& it : items) cout << it << " ";
-        cout << "]" << endl;
+        
+        for (const auto& it : items) cout << it << " "<<endl;
+        
     }
 };
 
@@ -60,11 +60,11 @@ void Undo(Stack<string>& undoStack, Stack<string>& redoStack, LinkedList& list) 
     redoStack.push(lastAction);
     if (lastAction.rfind("ADD:", 0) == 0) {
         list.remove();
-        cout << "Undo -> removed last added item." << endl;
+        cout << "removed last added item." << endl;
     } else if (lastAction.rfind("DEL:", 0) == 0) {
         string restored = lastAction.substr(4);
         list.insert(restored);
-        cout << "Undo -> restored deleted item: " << restored << endl;
+        cout << "restored deleted item: " << restored << endl;
     }
 }
 
@@ -78,10 +78,10 @@ void Redo(Stack<string>& redoStack, Stack<string>& undoStack, LinkedList& list) 
     if (lastAction.rfind("ADD:", 0) == 0) {
         string val = lastAction.substr(4);
         list.insert(val);
-        cout << "Redo -> re-added item: " << val << endl;
+        cout << "re-added item: " << val << endl;
     } else if (lastAction.rfind("DEL:", 0) == 0) {
         list.remove();
-        cout << "Redo -> re-deleted last item." << endl;
+        cout << "re-deleted last item." << endl;
     }
 }
 
