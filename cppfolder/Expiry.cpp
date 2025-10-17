@@ -13,7 +13,6 @@ void expiry(LinkedList* L, int e) {
     }
 
     Node* n = L->head;
-    // Get today's date
     auto today = floor<days>(system_clock::now());
     year_month_day ymd{today};
     Date currentDate;
@@ -21,7 +20,7 @@ void expiry(LinkedList* L, int e) {
     currentDate.m = static_cast<unsigned>(ymd.month());
     currentDate.y = static_cast<int>(ymd.year());
 
-    Stack dummyUndo; // Used to call del without recording
+    Stack dummyUndo; 
 
     while (n) {
         Node* next = n->next;
@@ -46,3 +45,4 @@ void expiry(LinkedList* L, int e) {
 
     cout << "\nExpiry check complete.\n";
 }
+
