@@ -168,6 +168,9 @@ struct LinkedList {
             Node* temp = r->next;
             r->next = temp->next;
             a.OV = temp->a;
+            auto &vec = hash[temp->a.name];
+        vec.erase(remove(vec.begin(), vec.end(), temp), vec.end());
+        if (vec.empty()) hash.erase(temp->a.name);
             delete temp;
             cout << medName << " at "; t.disp(); cout << " deleted.\n";
             u.push(a);
