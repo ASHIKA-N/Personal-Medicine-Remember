@@ -3,14 +3,9 @@ A personal medicine reminder built using C++ is a simple application that allows
 
 To-Do (X means done):
 
-1.DS Module w/ structures (header file)
+1.Check Errors
 
-2.header file for Medicine.
+2.Pray that it Runs
 
-3.header file for Person.
-
-4.link headers with main.
-
-5.Interface.
 
 
