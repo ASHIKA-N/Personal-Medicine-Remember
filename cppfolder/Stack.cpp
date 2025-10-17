@@ -19,7 +19,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L) {
         r.push(a);
 
         switch (a.act) {
-            case 'i': { // Undo insertion
+            case 'i': { 
                 Node *curr = L.head, *prev = nullptr;
                 while (curr && !(curr->a == a.NV)) {
                     prev = curr;
@@ -40,7 +40,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L) {
                 break;
             }
 
-            case 'd': { // Undo deletion
+            case 'd': { 
                 Node *newNode = new Node;
                 newNode->a = a.OV;
                 newNode->next = nullptr;
@@ -63,7 +63,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L) {
                 break;
             }
 
-            case 'a': { // Undo group deletion
+            case 'a': { 
                 Action temp = a;
                 temp.act = 'd';
                 Node *newNode = new Node;
@@ -88,7 +88,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L) {
                 break;
             }
 
-            case 'u': { // Undo alteration
+            case 'u': { 
                 Node *curr = L.head;
                 while (curr) {
                     if (curr->a == a.NV) {
@@ -123,7 +123,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L) {
         u.push(a);
 
         switch (a.act) {
-            case 'i': { // Redo insertion
+            case 'i': { 
                 Node *newNode = new Node;
                 newNode->a = a.NV;
                 newNode->next = nullptr;
@@ -146,7 +146,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L) {
                 break;
             }
 
-            case 'd': { // Redo deletion
+            case 'd': { 
                 Node *curr = L.head, *prev = nullptr;
                 while (curr && !(curr->a == a.OV)) {
                     prev = curr;
@@ -167,7 +167,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L) {
                 break;
             }
 
-            case 'u': { // Redo alteration
+            case 'u': { 
                 Node *curr = L.head;
                 while (curr) {
                     if (curr->a == a.OV) {
@@ -186,3 +186,4 @@ void Redo(Stack &r, Stack &u, LinkedList &L) {
         if (ch != 'y' && ch != 'Y') cont = false;
     }
 }
+
