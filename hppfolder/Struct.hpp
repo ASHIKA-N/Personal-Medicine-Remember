@@ -40,7 +40,10 @@ struct Date {
         return day >= 1 && day <= daysInMonth[month];
     }
 
-    void print() const { printf("%02d/%02d/%04d", d, m, y); }
+    void disp() const { 
+        cout << setw(2) << setfill('0') << h << ":" 
+        << setw(2) << setfill('0') << m; 
+    }
 
     int operator-(const Date &dt) const {
         sys_days thisDate{year{y}, month{m}, day{d}};
