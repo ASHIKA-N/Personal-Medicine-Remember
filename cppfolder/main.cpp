@@ -27,7 +27,7 @@ int main() {
     Queue todayQueue;
     Stack undo, redo;
 
-    do {
+    while(1) {
         menu();
         cout << "Enter choice: ";
         cin >> ch;
@@ -106,5 +106,5 @@ int main() {
             default:
                 cout << "Invalid Choice, Try Again\n";
         }
-    } while (ch != 9);
+    } 
 }
