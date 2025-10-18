@@ -34,30 +34,37 @@ Queue buildTodayQueue(const LinkedList &L) {
     return todayQ;
 }
 
-void reminderCheck(Queue &todayQ) {
-    cout << "\n--- Reminder Check ---\n";
-
+void realTimeReminder(Queue &todayQ) {
     while (!todayQ.empty()) {
         Med m = todayQ.peek();
-        cout << "\nReminder: Time to take medicine " << m.name << " (" << m.dosage << ") at ";
-        m.t.disp();
 
-        char taken;
-        cout << "\nMark as taken (y/n)? ";
-        cin >> taken;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        auto now = chrono::system_clock::now();
+        time_t t_now = chrono::system_clock::to_time_t(now);
+        tm *ltm = localtime(&t_now);
+        int currHour = ltm->tm_hour;
+        int currMin = ltm->tm_min;
 
-        if (taken == 'y' || taken == 'Y') {
-            todayQ.dequeue();
-            cout << "Medicine marked as taken and removed from queue.\n";
-        } else {
-            cout << "Reminder skipped for now.\n";
-            break;
+        // Check if it’s time for this medicine
+        if (currHour > m.t.hour || (currHour == m.t.hour && currMin >= m.t.min)) {
+            cout << "\nReminder: Time to take medicine " << m.name 
+                 << " (" << m.dosage << ") at ";
+            m.t.disp();
+
+            char taken;
+            cout << "\nMark as taken (y/n)? ";
+            cin >> taken;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            if (taken == 'y' || taken == 'Y') {
+                todayQ.dequeue();
+                cout << "Medicine marked as taken.\n";
+            } else {
+                cout << "Skipped for now.\n";
+            }
         }
+
+        this_thread::sleep_for(chrono::seconds(30));
     }
 
-    if (todayQ.empty())
-        cout << "\nAll today's medicines are taken!\n";
-    else
-        cout << "\nPending medicines remaining: " << todayQ.size() << "\n";
+    cout << "\nAll today's medicines are taken!\n";
 }
