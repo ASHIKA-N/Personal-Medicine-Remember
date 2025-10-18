@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include <cstdbool>
 #include "../hppfolder/DS.hpp"
 #include "../hppfolder/Expiry.hpp"
 #include "../hppfolder/Queue.hpp"
@@ -99,7 +100,7 @@ int main() {
                 expiry(&L, days);
                 Queue todayQ = buildTodayQueue(L);
                 reminderCheck(todayQ);
-                cout << "Exiting\n";
+                cout << "Session Complete\nExiting\n";
                 return 0;
             }
 
