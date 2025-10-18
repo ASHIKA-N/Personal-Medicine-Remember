@@ -87,6 +87,7 @@ struct LinkedList {
             curr = curr->next;
             delete tmp;
         }
+        hash.clear();
     }
 
     void insert(Stack &u) {
@@ -155,6 +156,9 @@ struct LinkedList {
             Node* temp = head;
             head = head->next;
             a.OV = temp->a;
+            auto &vec = hash[temp->a.name];
+            vec.erase(remove(vec.begin(), vec.end(), temp), vec.end());
+            if (vec.empty()) hash.erase(temp->a.name);
             delete temp;
             cout << medName << " at "; t.disp(); cout << " deleted.\n";
             u.push(a);
@@ -170,7 +174,7 @@ struct LinkedList {
             a.OV = temp->a;
             auto &vec = hash[temp->a.name];
             vec.erase(remove(vec.begin(), vec.end(), temp), vec.end());
-        i   f (vec.empty()) hash.erase(temp->a.name);
+            if (vec.empty()) hash.erase(temp->a.name);
             delete temp;
             cout << medName << " at "; t.disp(); cout << " deleted.\n";
             u.push(a);
@@ -186,6 +190,9 @@ struct LinkedList {
             head = head->next;
             c.OV = temp->a;
             u.push(c);
+            auto &vec = hash[temp->a.name];
+            vec.erase(remove(vec.begin(), vec.end(), temp), vec.end());
+            if (vec.empty()) hash.erase(temp->a.name);
             delete temp;
         }
 
@@ -196,6 +203,9 @@ struct LinkedList {
                 r->next = temp->next;
                 c.OV = temp->a;
                 u.push(c);
+                auto &vec = hash[temp->a.name];
+                vec.erase(remove(vec.begin(), vec.end(), temp), vec.end());
+                if (vec.empty()) hash.erase(temp->a.name);
                 delete temp;
             } else {
                 r = r->next;
@@ -238,8 +248,12 @@ struct LinkedList {
 
             cout << "Change medicine name? (y/n): "; cin >> op; cin.ignore();
             if (op == 'y' || op == 'Y') {
+                auto &oldVec = hash[c.OV.name];
+                oldVec.erase(remove(oldVec.begin(), oldVec.end(), r), oldVec.end());
+                if (oldVec.empty()) hash.erase(c.OV.name);
                 cout << "Enter new name: ";
                 getline(cin, r->a.name);
+                hash[r->a.name].push_back(r);
             }
 
             cout << "Change time? (y/n): "; cin >> op;
