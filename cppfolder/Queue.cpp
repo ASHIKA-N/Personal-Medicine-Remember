@@ -1,20 +1,24 @@
 #include <iostream>
 #include <ctime>
+#include <chrono>
+#include <thread>
 #include "../hppfolder/Queue.hpp"
 #include "../hppfolder/DS.hpp"
 
 using namespace std;
 
-int getTodayDayNumber() {
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-    int day = ltm->tm_wday;
-    return day == 0 ? 7 : day; // Sunday = 7
+int getTodayDayNumber()
+{
+    using namespace std::chrono;
+    weekday wd{floor<days>(system_clock::now())};
+    return wd.c_encoding() == 0 ? 7 : wd.c_encoding();
 }
 
-Queue buildTodayQueue(const LinkedList &L) {
+Queue buildTodayQueue(const LinkedList &L)
+{
     Queue todayQ;
-    if (!L.head) {
+    if (!L.head)
+    {
         cout << "No medicines in schedule.\n";
         return todayQ;
     }
@@ -22,9 +26,11 @@ Queue buildTodayQueue(const LinkedList &L) {
     int today = getTodayDayNumber();
     cout << "\nToday is day number: " << today << " (1=Mon..7=Sun)\n";
 
-    Node* r = L.head;
-    while (r) {
-        if (find(r->a.dy.begin(), r->a.dy.end(), today) != r->a.dy.end()) {
+    Node *r = L.head;
+    while (r)
+    {
+        if (find(r->a.dy.begin(), r->a.dy.end(), today) != r->a.dy.end())
+        {
             todayQ.enqueue(r->a);
         }
         r = r->next;
@@ -34,8 +40,10 @@ Queue buildTodayQueue(const LinkedList &L) {
     return todayQ;
 }
 
-void realTimeReminder(Queue &todayQ) {
-    while (!todayQ.empty()) {
+void realTimeReminder(Queue &todayQ)
+{
+    while (!todayQ.empty())
+    {
         Med m = todayQ.peek();
 
         auto now = chrono::system_clock::now();
@@ -45,8 +53,9 @@ void realTimeReminder(Queue &todayQ) {
         int currMin = ltm->tm_min;
 
         // Check if it’s time for this medicine
-        if (currHour > m.t.hour || (currHour == m.t.hour && currMin >= m.t.min)) {
-            cout << "\nReminder: Time to take medicine " << m.name 
+        if (currHour > m.t.h || (currHour == m.t.h && currMin >= m.t.m))
+        {
+            cout << "\nReminder: Time to take medicine " << m.name
                  << " (" << m.dosage << ") at ";
             m.t.disp();
 
@@ -55,10 +64,13 @@ void realTimeReminder(Queue &todayQ) {
             cin >> taken;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (taken == 'y' || taken == 'Y') {
+            if (taken == 'y' || taken == 'Y')
+            {
                 todayQ.dequeue();
                 cout << "Medicine marked as taken.\n";
-            } else {
+            }
+            else
+            {
                 cout << "Skipped for now.\n";
             }
         }

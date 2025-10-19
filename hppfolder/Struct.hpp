@@ -78,8 +78,8 @@ struct Date
 
     int operator-(const Date &dt) const
     {
-        sys_days thisDate = year{y} / month{m} / day{d};
-        sys_days otherDate = year{dt.y} / month{dt.m} / day{dt.d};
+        sys_days thisDate = year{y} / month{static_cast<unsigned>(m)} / day{static_cast<unsigned>(d)};
+        sys_days otherDate = year{dt.y} / month{static_cast<unsigned>(dt.m)} / day{static_cast<unsigned>(dt.d)};
         return (thisDate - otherDate).count();
     }
 
