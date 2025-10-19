@@ -6,13 +6,15 @@
 using namespace std;
 using namespace std::chrono;
 
-void expiry(LinkedList* L, int e) {
-    if (!L || !L->head) {
+void expiry(LinkedList *L, int e)
+{
+    if (!L || !L->head)
+    {
         cout << "No medicines in list.\n";
         return;
     }
 
-    Node* n = L->head;
+    Node *n = L->head;
     auto today = floor<days>(system_clock::now());
     year_month_day ymd{today};
     Date currentDate;
@@ -20,20 +22,23 @@ void expiry(LinkedList* L, int e) {
     currentDate.m = static_cast<unsigned>(ymd.month());
     currentDate.y = static_cast<int>(ymd.year());
 
-    Stack dummyUndo; 
+    Stack dummyUndo;
 
-    while (n) {
-        Node* next = n->next;
+    while (n)
+    {
+        Node *next = n->next;
         int diff = n->a.exp - currentDate;
 
-        if (diff <= 0) {
+        if (diff <= 0)
+        {
             cout << "\nMedicine expired and removed:\n";
             cout << "Name: " << n->a.name << " at ";
             n->a.t.disp();
             cout << endl;
             L->del(n->a.name, n->a.t, dummyUndo);
-        } 
-        else if (diff <= e) {
+        }
+        else if (diff <= e)
+        {
             cout << "\nMedicine will expire in " << diff << " day(s):\n";
             cout << "Name: " << n->a.name << " at ";
             n->a.t.disp();
@@ -45,4 +50,3 @@ void expiry(LinkedList* L, int e) {
 
     cout << "\nExpiry check complete.\n";
 }
-
