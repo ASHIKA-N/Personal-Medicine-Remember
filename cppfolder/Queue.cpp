@@ -40,7 +40,8 @@ Queue buildTodayQueue(const LinkedList &L)
     return todayQ;
 }
 
-void realTimeReminder(Queue &todayQ)
+void reminderCheck(Queue &todayQ)
+
 {
     while (!todayQ.empty())
     {
