@@ -13,7 +13,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L) {
     bool cont = true;
     char ch;
 
-    while (!u.empty() && cont) {
+    while (cont) {
         Action a = u.peek();
         u.pop();
         r.push(a);
@@ -39,7 +39,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L) {
                 if (vec.empty()) L.hash.erase(name);
 
                 delete curr;
-                cout << "Undo insert → Deleted: " << name << " at ";
+                cout << "Undo insert -> Deleted: " << name << " at ";
                 t.disp(); cout << endl;
                 break;
             }
@@ -62,7 +62,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L) {
                 }
 
                 L.hash[newNode->a.name].push_back(newNode);
-                cout << "Undo delete → Restored: " << newNode->a.name << " at ";
+                cout << "Undo delete -> Restored: " << newNode->a.name << " at ";
                 newNode->a.t.disp(); cout << endl;
 
                 if (!u.empty() && u.peek().act == 'a') {
@@ -107,7 +107,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L) {
                     }
                     curr = curr->next;
                 }
-                cout << "Undo update → Reverted last alteration.\n";
+                cout << "Undo update -> Reverted last alteration.\n";
 
                 if (!u.empty() && u.peek().act == 'u') {
                     char o;
@@ -134,7 +134,10 @@ void Undo(Stack &u, Stack &r, LinkedList &L) {
                 break;
             }
         }
-
+        if(u.empty()){ 
+            cout<<"Nothing left to Undo\n";
+            return;
+        }
         cout << "Continue undoing? (y/n): ";
         cin >> ch;
         if (ch != 'y' && ch != 'Y') cont = false;
@@ -150,7 +153,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L) {
     bool cont = true;
     char ch;
 
-    while (!r.empty() && cont) {
+    while (cont) {
         Action a = r.peek();
         r.pop();
         u.push(a);
@@ -174,7 +177,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L) {
                 }
 
                 L.hash[newNode->a.name].push_back(newNode);
-                cout << "Redo insert → Inserted: " << newNode->a.name << " at ";
+                cout << "Redo insert -> Inserted: " << newNode->a.name << " at ";
                 newNode->a.t.disp(); cout << endl;
                 break;
             }
@@ -195,7 +198,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L) {
                 vec.erase(remove(vec.begin(), vec.end(), curr), vec.end());
                 if (vec.empty()) L.hash.erase(curr->a.name);
 
-                cout << "Redo delete → Deleted: " << curr->a.name << " at ";
+                cout << "Redo delete -> Deleted: " << curr->a.name << " at ";
                 curr->a.t.disp(); cout << endl;
                 delete curr;
 
@@ -240,7 +243,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L) {
                     }
                     curr = curr->next;
                 }
-                cout << "Redo update → Reapplied alteration.\n";
+                cout << "Redo update -> Reapplied alteration.\n";
 
                 if (!r.empty() && r.peek().act == 'u') {
                     char o;
@@ -267,7 +270,10 @@ void Redo(Stack &r, Stack &u, LinkedList &L) {
                 break;
             }
         }
-
+        if(r.empty()){ 
+            cout<<"Nothing left to Undo\n";
+            return;
+        }
         cout << "Continue redoing? (y/n): ";
         cin >> ch;
         if (ch != 'y' && ch != 'Y') cont = false;

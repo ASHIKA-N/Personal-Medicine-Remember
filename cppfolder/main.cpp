@@ -52,6 +52,11 @@ int main()
         {
             if (!redo.empty())
                 redo.clear();
+            if (!L.head)
+            {
+                cout << "List is empty!\n";
+                break;
+            }
             string name;
             int h, m;
             cout << "Enter Name: ";
@@ -68,6 +73,11 @@ int main()
         {
             if (!redo.empty())
                 redo.clear();
+            if (!L.head)
+            {
+                cout << "List is empty!\n";
+                break;
+            }
             string name;
             cout << "Enter Name: ";
             getline(cin, name);
