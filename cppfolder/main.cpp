@@ -61,6 +61,11 @@ int main()
             int h, m;
             cout << "Enter Name: ";
             getline(cin, name);
+            if (!L.find(name))
+            {
+                cout << "No medicine found with that name.\n";
+                break;
+            }
             cout << "Enter Time (HH MM): ";
             cin >> h >> m;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -81,6 +86,11 @@ int main()
             string name;
             cout << "Enter Name: ";
             getline(cin, name);
+            if (!L.find(name))
+            {
+                cout << "No medicine found with that name.\n";
+                break;
+            }
             L.delAll(name, undo);
             break;
         }

@@ -1,7 +1,8 @@
 #include <iostream>
-#include <ctime>
 #include <chrono>
 #include <thread>
+#include <conio.h>
+#include <limits>
 #include "../hppfolder/Queue.hpp"
 #include "../hppfolder/DS.hpp"
 
@@ -41,9 +42,10 @@ Queue buildTodayQueue(const LinkedList &L)
 }
 
 void reminderCheck(Queue &todayQ)
-
 {
-    while (!todayQ.empty())
+    bool exitRequested = false;
+
+    while (!todayQ.empty() && !exitRequested)
     {
         Med m = todayQ.peek();
 
@@ -53,15 +55,15 @@ void reminderCheck(Queue &todayQ)
         int currHour = ltm->tm_hour;
         int currMin = ltm->tm_min;
 
-        // Check if it’s time for this medicine
         if (currHour > m.t.h || (currHour == m.t.h && currMin >= m.t.m))
         {
             cout << "\nReminder: Time to take medicine " << m.name
                  << " (" << m.dosage << ") at ";
             m.t.disp();
 
+            cout << "\nYou can exit anytime by pressing 'e'.\n";
             char taken;
-            cout << "\nMark as taken (y/n)? ";
+            cout << "Mark as taken (y/n) or 'e' to exit: ";
             cin >> taken;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -69,6 +71,11 @@ void reminderCheck(Queue &todayQ)
             {
                 todayQ.dequeue();
                 cout << "Medicine marked as taken.\n";
+            }
+            else if (taken == 'e' || taken == 'E')
+            {
+                exitRequested = true;
+                break;
             }
             else
             {
@@ -79,5 +86,6 @@ void reminderCheck(Queue &todayQ)
         this_thread::sleep_for(chrono::seconds(30));
     }
 
-    cout << "\nAll today's medicines are taken!\n";
+    if (!exitRequested)
+        cout << "\nAll today's medicines are taken!\n";
 }

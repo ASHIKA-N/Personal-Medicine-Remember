@@ -123,7 +123,7 @@ struct LinkedList
         cout << "Enter Dosage: ";
         getline(cin, t->a.dosage);
         cout << "Enter Quantity: ";
-        cin>> t->a.qty;
+        cin >> t->a.qty;
         cout << "Time (HH MM): ";
         cin >> t->a.t.h >> t->a.t.m;
 
@@ -294,16 +294,8 @@ struct LinkedList
         }
         for (Node *n : hash[name])
         {
-            cout << "\nFound: " << n->a.name
-                 << " | Dosage: " << n->a.dosage
-                 <<"| Quantity: "<<n->a.qty
-                 << " | Time: ";
-            n->a.t.disp();
-            cout << " | Expiry: ";
-            n->a.exp.print();
-            cout << " | Days: ";
-            for (int d : n->a.dy)
-                cout << d << " ";
+            cout << "\nFound\n";
+            n->a.disp();
         }
     }
 
