@@ -11,11 +11,11 @@ void menu()
 {
     cout << "\n=== Personal Medication Reminder ===\n";
     cout << "Choices\n";
-    cout << "1. View Med Schedule\n";
-    cout << "2. Insert New Med\n";
-    cout << "3. Delete a Med by Name and Time\n";
-    cout << "4. Delete all Meds of a Particular Name\n";
-    cout << "5. Alter a Med\n";
+    cout << "1. Insert New Med\n";
+    cout << "2. Delete a Med by Name and Time\n";
+    cout << "3. Delete all Meds of a Particular Name\n";
+    cout << "4. Alter a Med\n";
+    cout << "5. View Med Schedule\n";
     cout << "6. Search for a Med\n";
     cout << "7. Undo Last Operation\n";
     cout << "8. Redo Last Undone Operation\n";
