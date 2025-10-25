@@ -30,6 +30,8 @@ int main()
     Queue todayQueue;
     Stack undo, redo;
 
+    loadFromFile(L);
+    
     while (1)
     {
         menu();
