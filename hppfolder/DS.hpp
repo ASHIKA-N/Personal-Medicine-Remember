@@ -414,3 +414,5 @@ struct LinkedList
         rewriteFile(*this);
     }
 };
+
+#include "FileHandler.hpp"

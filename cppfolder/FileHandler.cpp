@@ -1,5 +1,5 @@
-#include "FileHandler.hpp"
-#include "DS.hpp"
+#include "../hppfolder/FileHandler.hpp"
+#include "../hppfolder/DS.hpp"
 
 void saveMedToFile(const Med &m)
 {
