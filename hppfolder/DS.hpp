@@ -340,15 +340,9 @@ struct LinkedList
         {
             found = true;
             cout << "Name: " << r->a.name
-                 << " | Dosage: " << r->a.dosage
+                 
                  << " | Quantity: " << r->a.qty
-                 << " | Time: ";
-            r->a.t.disp();
-            cout << " | Expiry: ";
-            r->a.exp.print();
-            cout << " | Days: ";
-            for (int d : r->a.dy)
-                cout << d << " ";
+                
             cout << "\n";
         }
         r = r->next;
