@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include "../hppfolder/FileHandler.hpp"
 #include "../hppfolder/DS.hpp"
 #include "../hppfolder/Expiry.hpp"
 #include "../hppfolder/Queue.hpp"
