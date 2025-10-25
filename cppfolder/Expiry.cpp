@@ -5,7 +5,7 @@
 
 using namespace std;
 using namespace std::chrono;
-
+LinkedList L;
 void expiry(LinkedList *L, int e)
 {
     if (!L || !L->head)
@@ -26,6 +26,7 @@ void expiry(LinkedList *L, int e)
 
     while (n)
     {
+        char opt;
         Node *next = n->next;
         int diff = n->a.exp - currentDate;
 
@@ -35,14 +36,26 @@ void expiry(LinkedList *L, int e)
             cout << "Name: " << n->a.name << " at ";
             n->a.t.disp();
             cout << endl;
+            cout<<"Do you need to refill (y/n): ";
+            cin>>opt;
+            if(opt=='y'|| opt=='Y'){
+              L.updatequt(n->a.name);
+            }
             L->del(n->a.name, n->a.t, dummyUndo);
         }
         else if (diff <= e)
         {
             cout << "\nMedicine will expire in " << diff << " day(s):\n";
             cout << "Name: " << n->a.name << " at ";
+            
             n->a.t.disp();
             cout << endl;
+            cout<<"Do you need to refill (y/n): ";
+            cin>>opt;
+            if(opt=='y'||opt=='Y'){
+              L.updatequt(n->a.name);
+            }
+            
         }
 
         n = next;
