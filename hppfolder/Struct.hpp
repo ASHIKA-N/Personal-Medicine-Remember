@@ -27,9 +27,6 @@ struct Time
     bool operator==(const Time &other) const { return toMinutes() == other.toMinutes(); }
 };
 
-
-
-
 struct Date
 {
     int d, m, y;
@@ -98,11 +95,9 @@ struct Med
         qty = q;
         dy = f.empty() ? vector<int>{1, 2, 3, 4, 5, 6, 7} : f;
         exp = Date(
-    Date::isValid(day, month, year) ? day : 1,
-    Date::isValid(day, month, year) ? month : 1,
-    Date::isValid(day, month, year) ? year : 2000
-);
-
+            Date::isValid(day, month, year) ? day : 1,
+            Date::isValid(day, month, year) ? month : 1,
+            Date::isValid(day, month, year) ? year : 2000);
     }
 
     void disp() const

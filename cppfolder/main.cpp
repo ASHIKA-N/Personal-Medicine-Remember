@@ -20,7 +20,8 @@ void menu()
     cout << "6. Search for a Med\n";
     cout << "7. Undo Last Operation\n";
     cout << "8. Redo Last Undone Operation\n";
-    cout << "9. Exit\n";
+    cout << "9. View quantity";
+    cout << "10. Exit\n";
 }
 
 int main()
@@ -120,8 +121,9 @@ int main()
         case 8:
             Redo(redo, undo, L);
             break;
-
-        case 9:
+       case 9:
+           L.viewqty();
+        case 10:
         {
             int days;
             cout << "\n--- Expiry Check before Exit ---\n";
