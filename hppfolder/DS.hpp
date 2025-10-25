@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include "Struct.hpp"
+#include "FileHandler.hpp"
 
 using namespace std;
 
@@ -172,7 +173,7 @@ struct LinkedList
         a.NV = t->a;
         u.push(a);
         cout << "Medicine added successfully!\n";
-        saveMedToFile(t->a);  
+        saveMedToFile(t->a);
     }
 
     void disp()
@@ -230,7 +231,7 @@ struct LinkedList
             t.disp();
             cout << " deleted.\n";
             u.push(a);
-            rewriteFile(*this);   
+            rewriteFile(*this);
             return;
         }
         else
