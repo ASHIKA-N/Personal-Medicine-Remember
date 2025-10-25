@@ -5,7 +5,8 @@
 #include <unordered_map>
 #include <algorithm>
 #include "Struct.hpp"
-#include "FileHandler.hpp"
+
+using namespace std;
 
 class Stack
 {
@@ -96,7 +97,7 @@ struct LinkedList
 {
     Node *head;
     unordered_map<string, vector<Node *>> hash;
-     
+
     LinkedList() : head(nullptr) {}
 
     ~LinkedList()
@@ -109,6 +110,7 @@ struct LinkedList
             delete tmp;
         }
         hash.clear();
+        head = nullptr;
     }
 
     void insert(Stack &u)
@@ -304,51 +306,52 @@ struct LinkedList
             n->a.disp();
         }
     }
-    void updatequt(const string &name){
+    void updatequt(const string &name)
+    {
         int qt;
-        cout<<"Enter quantity: ";
-        cin>>qt;
+        cout << "Enter quantity: ";
+        cin >> qt;
         for (Node *n : hash[name])
         {
-            n->a.qty=qt;
+            n->a.qty = qt;
         }
     }
-   void redqty(const string &name,int q){
-     int qt=(q-1);
-     for (Node *n : hash[name])
-        {
-               n->a.qty=qt;
-        }
-   }
-   void viewqty(){
-    int quat;
-     cout<<"Enter quantity : ";
-     cin>>quat;
-    if (!head)
+    void redqty(const string &name, int q)
     {
-        cout << "No medicines available.\n";
-        return;
-    }
-
-    bool found = false;
-    Node *r = head;
-
-    cout << "\nMedicines with quantity less than 2:\n";
-    while (r)
-    {
-        if (r->a.qty < quat)
+        int qt = (q - 1);
+        for (Node *n : hash[name])
         {
-            found = true;
-            cout << "Name: " << r->a.name
-                 
-                 << " | Quantity: " << r->a.qty
-                
-            cout << "\n";
+            n->a.qty = qt;
         }
-        r = r->next;
     }
+    void viewqty()
+    {
+        int quat;
+        cout << "Enter quantity : ";
+        cin >> quat;
+        if (!head)
+        {
+            cout << "No medicines available.\n";
+            return;
+        }
 
-}
+        bool found = false;
+        Node *r = head;
+
+        cout << "\nMedicines with quantity less than 2:\n";
+        while (r)
+        {
+            if (r->a.qty < quat)
+            {
+                found = true;
+                cout << "Name: " << r->a.name
+                     << " | Quantity: " << r->a.qty;
+
+                cout << "\n";
+            }
+            r = r->next;
+        }
+    }
     bool find(const string &name)
     {
         return hash.find(name) != hash.end();
@@ -457,3 +460,5 @@ struct LinkedList
         rewriteFile(*this);
     }
 };
+
+#include "FileHandler.hpp"

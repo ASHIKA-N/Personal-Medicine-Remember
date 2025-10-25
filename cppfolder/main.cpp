@@ -20,7 +20,7 @@ void menu()
     cout << "6. Search for a Med\n";
     cout << "7. Undo Last Operation\n";
     cout << "8. Redo Last Undone Operation\n";
-    cout << "9. View quantity";
+    cout << "9. View quantity\n";
     cout << "10. Exit\n";
 }
 
@@ -32,7 +32,7 @@ int main()
     Stack undo, redo;
 
     loadFromFile(L);
-    
+
     while (1)
     {
         menu();
@@ -121,8 +121,9 @@ int main()
         case 8:
             Redo(redo, undo, L);
             break;
-       case 9:
-           L.viewqty();
+        case 9:
+            L.viewqty();
+            break;
         case 10:
         {
             int days;
@@ -140,7 +141,6 @@ int main()
             cout << "Session Complete\nExiting\n";
             return 0;
         }
-
         default:
             cout << "Invalid Choice, Try Again\n";
         }

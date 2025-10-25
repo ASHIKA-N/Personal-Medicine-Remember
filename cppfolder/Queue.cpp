@@ -7,6 +7,7 @@
 #include "../hppfolder/DS.hpp"
 
 using namespace std;
+
 LinkedList L;
 int getTodayDayNumber()
 {
@@ -65,8 +66,9 @@ void reminderCheck(Queue &todayQ)
             char taken;
             cout << "Mark as taken (y/n) or 'e' to exit: ";
             cin >> taken;
-            if(taken=='y' || taken=='Y'){
-                L.redqty(m.name,m.qty);
+            if (taken == 'y' || taken == 'Y')
+            {
+                L.redqty(m.name, m.qty);
             }
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 

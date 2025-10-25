@@ -1,17 +1,30 @@
 #include "../hppfolder/FileHandler.hpp"
 #include "../hppfolder/DS.hpp"
+#include <filesystem>
+#include <sstream>
+
+using namespace std;
+
+static string sanitize(const string &s)
+{
+    string out = s;
+    for (char &c : out)
+        if (c == '|' || c == '\n' || c == '\r')
+            c = ' ';
+    return out;
+}
 
 void saveMedToFile(const Med &m)
 {
-    ofstream file(FILENAME, ios::app);
-    if (!file)
+    ofstream file("med_data.txt", ios::app);
+    if (!file.is_open())
     {
         cout << "Error opening file for writing.\n";
         return;
     }
 
-    file << m.name << "|"
-         << m.dosage << "|"
+    file << sanitize(m.name) << "|"
+         << sanitize(m.dosage) << "|"
          << m.qty << "|"
          << m.t.h << " " << m.t.m << "|"
          << m.exp.d << " " << m.exp.m << " " << m.exp.y << "|";
@@ -28,10 +41,13 @@ void saveMedToFile(const Med &m)
 
 void rewriteFile(const LinkedList &L)
 {
-    ofstream file(FILENAME, ios::trunc);
-    if (!file)
+    const string mainFile = "med_data.txt";
+    const string tempFile = "temp_med_data.txt";
+
+    ofstream out(tempFile, ios::trunc);
+    if (!out.is_open())
     {
-        cout << "Error opening file for rewrite.\n";
+        cerr << "[Error] Unable to open temporary file for rewrite.\n";
         return;
     }
 
@@ -39,29 +55,42 @@ void rewriteFile(const LinkedList &L)
     while (r)
     {
         const Med &m = r->a;
-        file << m.name << "|"
-             << m.dosage << "|"
-             << m.qty << "|"
-             << m.t.h << " " << m.t.m << "|"
-             << m.exp.d << " " << m.exp.m << " " << m.exp.y << "|";
+
+        out << sanitize(m.name) << "|"
+            << sanitize(m.dosage) << "|"
+            << m.qty << "|"
+            << m.t.h << " " << m.t.m << "|"
+            << m.exp.d << " " << m.exp.m << " " << m.exp.y << "|";
+
         for (size_t i = 0; i < m.dy.size(); i++)
         {
-            file << m.dy[i];
+            out << m.dy[i];
             if (i != m.dy.size() - 1)
-                file << ",";
+                out << ",";
         }
-        file << "\n";
+        out << "\n";
         r = r->next;
     }
-    file.close();
+
+    out.close();
+
+    try
+    {
+        std::filesystem::rename(tempFile, mainFile);
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        cerr << "[Error] Could not replace old data file: " << e.what() << endl;
+        filesystem::remove(tempFile);
+    }
 }
 
 void loadFromFile(LinkedList &L)
 {
-    ifstream file(FILENAME);
-    if (!file)
+    ifstream file("med_data.txt");
+    if (!file.is_open())
     {
-        cout << "No existing medicine file found.\n";
+        cout << "[Info] No medicine file found. Starting fresh.\n";
         return;
     }
 
@@ -71,32 +100,31 @@ void loadFromFile(LinkedList &L)
         if (line.empty())
             continue;
 
-        Med m;
-        string daysPart;
-        replace(line.begin(), line.end(), '|', ' ');
         stringstream ss(line);
+        Med m;
+        string qtyStr, timeStr, expStr, daysStr;
 
-        ss >> ws;
-        getline(ss, m.name, ' ');
-        getline(ss, m.dosage, ' ');
-        ss >> m.qty;
-        ss >> m.t.h >> m.t.m;
-        ss >> m.exp.d >> m.exp.m >> m.exp.y;
+        getline(ss, m.name, '|');
+        getline(ss, m.dosage, '|');
+        getline(ss, qtyStr, '|');
+        getline(ss, timeStr, '|');
+        getline(ss, expStr, '|');
+        getline(ss, daysStr, '|');
+
+        stringstream(qtyStr) >> m.qty;
+        stringstream(timeStr) >> m.t.h >> m.t.m;
+        stringstream(expStr) >> m.exp.d >> m.exp.m >> m.exp.y;
 
         m.dy.clear();
-        string rest;
-        getline(ss, rest);
-        stringstream ds(rest);
         string num;
+        stringstream ds(daysStr);
         while (getline(ds, num, ','))
         {
             if (!num.empty())
                 m.dy.push_back(stoi(num));
         }
 
-        Node *node = new Node;
-        node->a = m;
-        node->next = nullptr;
+        Node *node = new Node{m, nullptr};
 
         if (!L.head || m.t < L.head->a.t)
         {
@@ -116,5 +144,5 @@ void loadFromFile(LinkedList &L)
     }
 
     file.close();
-    cout << "Loaded medicines from file successfully.\n";
+    cout << "[Info] Medicines loaded successfully.\n";
 }
