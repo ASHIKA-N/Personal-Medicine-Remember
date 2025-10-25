@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <algorithm>
 #include "Struct.hpp"
-#include "FileHandler.hpp"
 
 using namespace std;
 
@@ -415,3 +414,5 @@ struct LinkedList
         rewriteFile(*this);
     }
 };
+
+#include "FileHandler.hpp"

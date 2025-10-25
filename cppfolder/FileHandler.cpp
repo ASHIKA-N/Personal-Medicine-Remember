@@ -1,10 +1,6 @@
-#pragma once
-#include <fstream>
-using namespace std;
+#include "FileHandler.hpp"
+#include "DS.hpp" // Now we can use LinkedList and Node safely
 
-const string FILENAME = "med_data.txt";
-
-// Save one medicine in append mode
 void saveMedToFile(const Med &m)
 {
     ofstream file(FILENAME, ios::app);
@@ -14,14 +10,12 @@ void saveMedToFile(const Med &m)
         return;
     }
 
-    // Save in plain text format (one med per block)
     file << m.name << "|"
          << m.dosage << "|"
          << m.qty << "|"
          << m.t.h << " " << m.t.m << "|"
          << m.exp.d << " " << m.exp.m << " " << m.exp.y << "|";
 
-    // Save days
     for (size_t i = 0; i < m.dy.size(); i++)
     {
         file << m.dy[i];
@@ -29,11 +23,9 @@ void saveMedToFile(const Med &m)
             file << ",";
     }
     file << "\n";
-
     file.close();
 }
 
-// Write entire linked list (used after delete/alter)
 void rewriteFile(const LinkedList &L)
 {
     ofstream file(FILENAME, ios::trunc);
@@ -61,11 +53,9 @@ void rewriteFile(const LinkedList &L)
         file << "\n";
         r = r->next;
     }
-
     file.close();
 }
 
-// Load all meds at program start
 void loadFromFile(LinkedList &L)
 {
     ifstream file(FILENAME);
@@ -104,7 +94,6 @@ void loadFromFile(LinkedList &L)
                 m.dy.push_back(stoi(num));
         }
 
-        // Insert maintaining order by time
         Node *node = new Node;
         node->a = m;
         node->next = nullptr;
