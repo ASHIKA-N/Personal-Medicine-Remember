@@ -4,11 +4,9 @@
 #include <conio.h>
 #include <limits>
 #include "../hppfolder/Queue.hpp"
-#include "../hppfolder/DS.hpp"
 
 using namespace std;
 
-LinkedList L;
 int getTodayDayNumber()
 {
     using namespace std::chrono;
@@ -42,7 +40,7 @@ Queue buildTodayQueue(const LinkedList &L)
     return todayQ;
 }
 
-void reminderCheck(Queue &todayQ)
+void reminderCheck(Queue &todayQ, LinkedList &L)
 {
     bool exitRequested = false;
 

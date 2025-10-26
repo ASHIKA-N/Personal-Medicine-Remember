@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm>
 #include "../hppfolder/Stack.hpp"
-#include "../hppfolder/DS.hpp"
 
 using namespace std;
 
