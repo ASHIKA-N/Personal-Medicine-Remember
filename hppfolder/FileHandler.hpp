@@ -3,7 +3,7 @@
 #include "Struct.hpp"
 
 struct Med;
-class LinkedList;
+struct LinkedList;
 
 void saveMedToFile(const Med &m);
 void rewriteFile(const LinkedList &L);
