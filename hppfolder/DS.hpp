@@ -325,34 +325,45 @@ struct LinkedList
             n->a.qty = qt;
         }
     }
-    void viewqty()
+   struct PairHash {
+    size_t operator()(const pair<string, string>& p) const noexcept {
+        return hash<string>()(p.first) ^ (hash<string>()(p.second) << 1);
+    }
+   };
+   
+   void viewqty(){
+    unordered_map<pair<string,string>,int,PairHash> medqty;
+    Node* q=head;
+    if (!head)
     {
-        int quat;
-        cout << "Enter quantity : ";
-        cin >> quat;
-        if (!head)
-        {
-            cout << "No medicines available.\n";
-            return;
-        }
+        cout << "No medicines available.\n";
+        return;
+    }
+    while(q!=NULL){
+        medqty[{q->a.name,q->a.dosage}]=q->a.qty;
+        q=q->next;
+    }
 
-        bool found = false;
-        Node *r = head;
+    int quat;
+    cout<<"Enter quantity threshold : ";
+    cin>>quat;
+    cout<<"Medicine with quantity less than "<<quat<<endl;
 
-        cout << "\nMedicines with quantity less than 2:\n";
-        while (r)
-        {
-            if (r->a.qty < quat)
-            {
-                found = true;
-                cout << "Name: " << r->a.name
-                     << " | Quantity: " << r->a.qty;
-
-                cout << "\n";
-            }
-            r = r->next;
+    bool found = false;
+    Node *r = head;
+    cout << "\nMedicines with quantity less than 2:\n";
+    for(auto &p :medqty){
+        if(p.second<quat){
+            found=true;
+            cout<<
+            "Name: "<<p.first.first<<" "<<
+            "Dosage: "<<p.first.second<<" "<<
+            "Quantity: "<<p.second<<endl;
         }
     }
+
+ }
+    
     bool find(const string &name)
     {
         return hash.find(name) != hash.end();
