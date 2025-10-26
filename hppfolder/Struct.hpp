@@ -80,19 +80,17 @@ struct Med
 {
     string name;
     string dosage;
-    int qty;
     Time t;
     Date exp;
     vector<int> dy;
 
-    Med() : name(""), dosage(""), qty(0), t(0, 0), exp(1, 1, 2000), dy({}) {}
+    Med() : name(""), dosage(""), t(0, 0), exp(1, 1, 2000), dy({}) {}
 
-    Med(const string &n, const string &d, int hour, int min, vector<int> f, int day, int month, int year, int q)
+    Med(const string &n, const string &d, int hour, int min, vector<int> f, int day, int month, int year)
     {
         name = n;
         dosage = d;
         t = Time(hour, min);
-        qty = q;
         dy = f.empty() ? vector<int>{1, 2, 3, 4, 5, 6, 7} : f;
         exp = Date(
             Date::isValid(day, month, year) ? day : 1,
@@ -108,7 +106,6 @@ struct Med
         cout << "\nDays to consume: ";
         for (int d : dy)
             cout << d << " ";
-        cout << "\nQuantity: " << qty;
         cout << "\nExpiry Date: ";
         exp.print();
         cout << "\n-----------------\n";
