@@ -138,6 +138,7 @@ struct LinkedList
         int q;
         cout << "Enter Quantity: ";
         cin >> q;
+        a.qb = q;
         cout << "Time (HH MM): ";
         cin >> t->a.t.h >> t->a.t.m;
 
@@ -218,6 +219,7 @@ struct LinkedList
             Node *temp = head;
             head = head->next;
             a.OV = temp->a;
+            a.qb = qty[{temp->a.name, temp->a.dosage}];
             auto &vec = hash[temp->a.name];
             vec.erase(remove(vec.begin(), vec.end(), temp), vec.end());
             if (vec.empty())
@@ -250,6 +252,7 @@ struct LinkedList
             Node *temp = r->next;
             r->next = temp->next;
             a.OV = temp->a;
+            a.qb = qty[{temp->a.name, temp->a.dosage}];
             auto &vec = hash[temp->a.name];
             vec.erase(remove(vec.begin(), vec.end(), temp), vec.end());
             if (vec.empty())
@@ -293,6 +296,7 @@ struct LinkedList
             Node *temp = head;
             head = head->next;
             c.OV = temp->a;
+            c.qb = qty[{temp->a.name, temp->a.dosage}];
             u.push(c);
             delete temp;
         }
@@ -306,6 +310,7 @@ struct LinkedList
                 Node *temp = r->next;
                 r->next = temp->next;
                 c.OV = temp->a;
+                c.qb = qty[{temp->a.name, temp->a.dosage}];
                 u.push(c);
                 delete temp;
             }

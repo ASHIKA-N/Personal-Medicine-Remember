@@ -52,15 +52,15 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
             auto key = make_pair(curr->a.name, curr->a.dosage);
 
             bool stillExists = false;
-            Node *r = L.head;
-            while (r)
+            Node *run = L.head;
+            while (run)
             {
-                if (r->a.name == curr->a.name && r->a.dosage == curr->a.dosage)
+                if (run->a.name == curr->a.name && run->a.dosage == curr->a.dosage)
                 {
                     stillExists = true;
                     break;
                 }
-                r = r->next;
+                run = run->next;
             }
 
             if (!stillExists)
@@ -95,6 +95,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
             }
 
             L.hash[newNode->a.name].push_back(newNode);
+            L.qty[{newNode->a.name, newNode->a.dosage}] = a.qb;
             cout << "Undo delete -> Restored: " << newNode->a.name << " at ";
             newNode->a.t.disp();
             cout << endl;
@@ -235,6 +236,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
             }
 
             L.hash[newNode->a.name].push_back(newNode);
+            L.qty[{newNode->a.name, newNode->a.dosage}] = a.qb;
             cout << "Redo insert -> Inserted: " << newNode->a.name << " at ";
             newNode->a.t.disp();
             cout << endl;
@@ -262,6 +264,22 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
             vec.erase(remove(vec.begin(), vec.end(), curr), vec.end());
             if (vec.empty())
                 L.hash.erase(curr->a.name);
+
+            auto key = make_pair(curr->a.name, curr->a.dosage);
+            bool stillExists = false;
+            Node *run = L.head;
+            while (run)
+            {
+                if (run->a.name == curr->a.name && run->a.dosage == curr->a.dosage)
+                {
+                    stillExists = true;
+                    break;
+                }
+                run = run->next;
+            }
+
+            if (!stillExists)
+                L.qty.erase(key);
 
             cout << "Redo delete -> Deleted: " << curr->a.name << " at ";
             curr->a.t.disp();
