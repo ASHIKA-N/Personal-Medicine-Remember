@@ -336,7 +336,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
         }
         if (r.empty())
         {
-            cout << "Nothing left to Undo\n";
+            cout << "Nothing left to Redo\n";
             return;
         }
         cout << "Continue redoing? (y/n): ";

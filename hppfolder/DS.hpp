@@ -487,6 +487,8 @@ struct LinkedList
             if (key.first == name)
             {
                 val = max(0, val - q);
+                if (!val)
+                    cout << "Medicine Depleted\n";
                 return;
             }
         }
@@ -498,7 +500,8 @@ struct LinkedList
         {
             if (key.first == name)
             {
-                val = 10;
+                val += 10;
+                cout << "Quantity restocked to " << val << endl;
                 return;
             }
         }

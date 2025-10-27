@@ -76,6 +76,8 @@ void rewriteFile(const LinkedList &L)
 
     try
     {
+        if (std::filesystem::exists(mainFile))
+            std::filesystem::remove(mainFile);
         std::filesystem::rename(tempFile, mainFile);
     }
     catch (const std::filesystem::filesystem_error &e)
