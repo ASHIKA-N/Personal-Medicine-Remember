@@ -94,18 +94,18 @@ struct Node
     Node *next;
 };
 
+struct PairHash
+{
+    size_t operator()(const pair<string, string> &p) const noexcept
+    {
+        return hash<string>()(p.first) ^ (hash<string>()(p.second) << 1);
+    }
+};
+
 struct LinkedList
 {
     Node *head;
     unordered_map<string, vector<Node *>> hash;
-
-    struct PairHash
-    {
-        size_t operator()(const pair<string, string> &p) const noexcept
-        {
-            return hash<string>()(p.first) ^ (hash<string>()(p.second) << 1);
-        }
-    };
 
     unordered_map<pair<string, string>, int, PairHash> qty;
 
@@ -346,17 +346,6 @@ struct LinkedList
             n->a.disp();
         }
     }
-    bool stillExists = false;
-    for (Node *n : hash[temp->a.name])
-    {
-        if (n->a.dosage == temp->a.dosage)
-        {
-            stillExists = true;
-            break;
-        }
-    }
-    if (!stillExists)
-        qty.erase({temp->a.name, temp->a.dosage});
 
     bool find(const string &name)
     {
@@ -371,6 +360,11 @@ struct LinkedList
         while (r)
         {
             r->a.disp();
+            auto key = make_pair(r->a.name, r->a.dosage);
+            if (qty.find(key) != qty.end())
+                cout << "Quantity: " << qty[key] << endl;
+            else
+                cout << "Quantity: (not set)\n";
             char op;
             cout << "Do you want to change any details? (y/n): ";
             cin >> op;
@@ -445,8 +439,10 @@ struct LinkedList
             cin >> op;
             if (op == 'y' || op == 'Y')
             {
+                int newQty;
                 cout << "Enter new quantity: ";
-                cin >> r->a.qty;
+                cin >> newQty;
+                qty[{r->a.name, r->a.dosage}] = newQty;
             }
 
             cout << "Change expiry date? (y/n): ";
