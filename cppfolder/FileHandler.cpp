@@ -14,7 +14,7 @@ static string sanitize(const string &s)
     return out;
 }
 
-void saveMedToFile(const Med &m)
+void saveMedToFile(const Med &m, int qty)
 {
     ofstream file("med_data.txt", ios::app);
     if (!file.is_open())
@@ -25,7 +25,7 @@ void saveMedToFile(const Med &m)
 
     file << sanitize(m.name) << "|"
          << sanitize(m.dosage) << "|"
-         << m.qty << "|"
+         << qty << "|"
          << m.t.h << " " << m.t.m << "|"
          << m.exp.d << " " << m.exp.m << " " << m.exp.y << "|";
 
@@ -55,10 +55,14 @@ void rewriteFile(const LinkedList &L)
     while (r)
     {
         const Med &m = r->a;
+        int q = 0;
+        auto it = L.qty.find({m.name, m.dosage});
+        if (it != L.qty.end())
+            q = it->second;
 
         out << sanitize(m.name) << "|"
             << sanitize(m.dosage) << "|"
-            << m.qty << "|"
+            << q << "|" // qty from map
             << m.t.h << " " << m.t.m << "|"
             << m.exp.d << " " << m.exp.m << " " << m.exp.y << "|";
 
@@ -113,7 +117,8 @@ void loadFromFile(LinkedList &L)
         getline(ss, expStr, '|');
         getline(ss, daysStr, '|');
 
-        stringstream(qtyStr) >> m.qty;
+        int qty = 0;
+        stringstream(qtyStr) >> qty;
         stringstream(timeStr) >> m.t.h >> m.t.m;
         stringstream(expStr) >> m.exp.d >> m.exp.m >> m.exp.y;
 
@@ -143,6 +148,7 @@ void loadFromFile(LinkedList &L)
         }
 
         L.hash[m.name].push_back(node);
+        L.qty[{m.name, m.dosage}] = qty; // store qty in map
     }
 
     file.close();

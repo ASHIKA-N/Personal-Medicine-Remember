@@ -187,7 +187,7 @@ struct LinkedList
         a.NV = t->a;
         u.push(a);
         cout << "Medicine added successfully!\n";
-        saveMedToFile(t->a);
+        saveMedToFile(t->a, q);
     }
 
     void disp()

@@ -27,6 +27,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
         case 'i':
         {
             string name = a.NV.name;
+            string dosage = a.NV.dosage;
             Time t = a.NV.t;
 
             Node *curr = L.head, *prev = nullptr;
@@ -47,6 +48,23 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
             vec.erase(remove(vec.begin(), vec.end(), curr), vec.end());
             if (vec.empty())
                 L.hash.erase(name);
+
+            auto key = make_pair(curr->a.name, curr->a.dosage);
+
+            bool stillExists = false;
+            Node *r = L.head;
+            while (r)
+            {
+                if (r->a.name == curr->a.name && r->a.dosage == curr->a.dosage)
+                {
+                    stillExists = true;
+                    break;
+                }
+                r = r->next;
+            }
+
+            if (!stillExists)
+                L.qty.erase(key);
 
             delete curr;
             cout << "Undo insert -> Deleted: " << name << " at ";

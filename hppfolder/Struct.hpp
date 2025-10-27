@@ -122,7 +122,7 @@ struct Action
     char act;
     Med OV;
     Med NV;
-    vector<Med> group;
+    int qb;
 
     Action() : act('n'), OV(Med()), NV(Med()) {}
 };

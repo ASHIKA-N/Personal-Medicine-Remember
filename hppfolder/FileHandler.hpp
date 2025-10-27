@@ -5,6 +5,6 @@
 struct Med;
 struct LinkedList;
 
-void saveMedToFile(const Med &m);
+void saveMedToFile(const Med &m, int qty);
 void rewriteFile(const LinkedList &L);
 void loadFromFile(LinkedList &L);
