@@ -461,4 +461,46 @@ struct LinkedList
         }
         rewriteFile(*this);
     }
+
+    void viewqty()
+    {
+        if (qty.empty())
+        {
+            cout << "No quantities recorded.\n";
+            return;
+        }
+
+        cout << "\n--- Medicine Quantities ---\n";
+        for (auto &[key, val] : qty)
+        {
+            cout << "Name: " << key.first
+                 << " | Dosage: " << key.second
+                 << " | Quantity: " << val << endl;
+        }
+        cout << "----------------------------\n";
+    }
+
+    void redqty(const string &name, int q)
+    {
+        for (auto &[key, val] : qty)
+        {
+            if (key.first == name)
+            {
+                val = max(0, val - q);
+                return;
+            }
+        }
+    }
+
+    void updatequt(const string &name)
+    {
+        for (auto &[key, val] : qty)
+        {
+            if (key.first == name)
+            {
+                val = 10;
+                return;
+            }
+        }
+    }
 };
