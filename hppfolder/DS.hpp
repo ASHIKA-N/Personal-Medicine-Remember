@@ -198,7 +198,6 @@ struct LinkedList
         a.NV = t->a;
         u.push(a);
         cout << "Medicine added successfully!\n";
-        saveMedToFile(t->a, q);
     }
 
     void disp()
@@ -283,7 +282,6 @@ struct LinkedList
             t.disp();
             cout << " deleted.\n";
             u.push(a);
-            rewriteFile(*this);
             return;
         }
         else
@@ -342,7 +340,6 @@ struct LinkedList
         if (found)
         {
             cout << "All medicines named \"" << medName << "\" deleted successfully.\n";
-            rewriteFile(*this);
         }
         else
             cout << "No medicine named \"" << medName << "\" found.\n";
@@ -475,7 +472,6 @@ struct LinkedList
             u.push(c);
             r = r->next;
         }
-        rewriteFile(*this);
     }
 
     void viewqty()

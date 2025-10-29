@@ -39,7 +39,7 @@ void saveMedToFile(const Med &m, int qty)
     file.close();
 }
 
-void rewriteFile(const LinkedList &L)
+void commitToFile(const LinkedList &L)
 {
     const string mainFile = "med_data.txt";
     const string tempFile = "temp_med_data.txt";
@@ -47,7 +47,7 @@ void rewriteFile(const LinkedList &L)
     ofstream out(tempFile, ios::trunc);
     if (!out.is_open())
     {
-        cerr << "[Error] Unable to open temporary file for rewrite.\n";
+        cerr << "[Error] Unable to open temporary file for commit.\n";
         return;
     }
 
@@ -62,7 +62,7 @@ void rewriteFile(const LinkedList &L)
 
         out << sanitize(m.name) << "|"
             << sanitize(m.dosage) << "|"
-            << q << "|" // qty from map
+            << q << "|"
             << m.t.h << " " << m.t.m << "|"
             << m.exp.d << " " << m.exp.m << " " << m.exp.y << "|";
 
@@ -83,74 +83,11 @@ void rewriteFile(const LinkedList &L)
         if (std::filesystem::exists(mainFile))
             std::filesystem::remove(mainFile);
         std::filesystem::rename(tempFile, mainFile);
+        cout << "All changes committed successfully.\n";
     }
     catch (const std::filesystem::filesystem_error &e)
     {
-        cerr << "[Error] Could not replace old data file: " << e.what() << endl;
+        cerr << "[Error] Commit failed, keeping old file: " << e.what() << endl;
         filesystem::remove(tempFile);
     }
-}
-
-void loadFromFile(LinkedList &L)
-{
-    ifstream file("med_data.txt");
-    if (!file.is_open())
-    {
-        cout << "[Info] No medicine file found. Starting fresh.\n";
-        return;
-    }
-
-    string line;
-    while (getline(file, line))
-    {
-        if (line.empty())
-            continue;
-
-        stringstream ss(line);
-        Med m;
-        string qtyStr, timeStr, expStr, daysStr;
-
-        getline(ss, m.name, '|');
-        getline(ss, m.dosage, '|');
-        getline(ss, qtyStr, '|');
-        getline(ss, timeStr, '|');
-        getline(ss, expStr, '|');
-        getline(ss, daysStr, '|');
-
-        int qty = 0;
-        stringstream(qtyStr) >> qty;
-        stringstream(timeStr) >> m.t.h >> m.t.m;
-        stringstream(expStr) >> m.exp.d >> m.exp.m >> m.exp.y;
-
-        m.dy.clear();
-        string num;
-        stringstream ds(daysStr);
-        while (getline(ds, num, ','))
-        {
-            if (!num.empty())
-                m.dy.push_back(stoi(num));
-        }
-
-        Node *node = new Node{m, nullptr};
-
-        if (!L.head || m.t < L.head->a.t)
-        {
-            node->next = L.head;
-            L.head = node;
-        }
-        else
-        {
-            Node *r = L.head;
-            while (r->next && !(m.t < r->next->a.t))
-                r = r->next;
-            node->next = r->next;
-            r->next = node;
-        }
-
-        L.hash[m.name].push_back(node);
-        L.qty[{m.name, m.dosage}] = qty; // store qty in map
-    }
-
-    file.close();
-    cout << "[Info] Medicines loaded successfully.\n";
 }

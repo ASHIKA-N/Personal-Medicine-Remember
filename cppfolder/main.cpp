@@ -138,7 +138,7 @@ int main()
             expiry(&L, days);
             Queue todayQ = buildTodayQueue(L);
             reminderCheck(todayQ, L);
-            rewriteFile(L);
+            commitToFile(L);
             cout << "Session Complete\nExiting\n";
             return 0;
         }
