@@ -492,21 +492,32 @@ struct LinkedList
         cout << "----------------------------\n";
     }
 
-    void redqty(const string &name, int q)
+    void redqty(const string &name, int q = 1)
     {
         for (auto &[key, val] : qty)
         {
             if (key.first == name)
             {
+                if (val == 0)
+                {
+                    cout << "Medicine already depleted. Restocking...\n";
+                    updqty(name);
+                    return;
+                }
+
                 val = max(0, val - q);
-                if (!val)
-                    cout << "Medicine Depleted\n";
+
+                if (val == 0)
+                {
+                    cout << "Medicine depleted. Auto restocking...\n";
+                    updqty(name);
+                }
                 return;
             }
         }
     }
 
-    void updatequt(const string &name)
+    void updqty(const string &name)
     {
         for (auto &[key, val] : qty)
         {

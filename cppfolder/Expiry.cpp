@@ -22,7 +22,7 @@ void expiry(LinkedList *L, int e)
     currentDate.m = static_cast<unsigned>(ymd.month());
     currentDate.y = static_cast<int>(ymd.year());
 
-    Stack dummyUndo;
+    Stack dummy;
 
     while (n)
     {
@@ -32,7 +32,7 @@ void expiry(LinkedList *L, int e)
 
         if (diff <= 0)
         {
-            cout << "\nMedicine expired and removed:\n";
+            cout << "\nMedicine expired\n";
             cout << "Name: " << n->a.name << " at ";
             n->a.t.disp();
             cout << endl;
@@ -40,9 +40,13 @@ void expiry(LinkedList *L, int e)
             cin >> opt;
             if (opt == 'y' || opt == 'Y')
             {
-                L->updatequt(n->a.name);
+                L->updqty(n->a.name);
             }
-            L->del(n->a.name, n->a.t, dummyUndo);
+            else
+            {
+                cout << "No refill needed.\n";
+                L->del(n->a.name, n->a.t, dummy);
+            }
         }
         else if (diff <= e)
         {
@@ -55,7 +59,7 @@ void expiry(LinkedList *L, int e)
             cin >> opt;
             if (opt == 'y' || opt == 'Y')
             {
-                L->updatequt(n->a.name);
+                L->updqty(n->a.name);
             }
         }
 

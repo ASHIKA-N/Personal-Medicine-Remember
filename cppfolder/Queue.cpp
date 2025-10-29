@@ -66,7 +66,7 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
             cin >> taken;
             if (taken == 'y' || taken == 'Y')
             {
-                L.redqty(m.name, L.qty[{m.name, m.dosage}]);
+                L.redqty(m.name, m.dosage);
             }
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
