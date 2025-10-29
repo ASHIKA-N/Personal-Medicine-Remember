@@ -17,8 +17,14 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
 
     while (cont)
     {
+        int oldQty;
         Action a = u.peek();
         u.pop();
+        if (a.act == 'u')
+        {
+            oldQty = a.qb;
+            a.qb = L.qty[{a.NV.name, a.NV.dosage}];
+        }
         r.push(a);
 
         switch (a.act)
@@ -132,6 +138,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
                         }
 
                         L.hash[newNode2->a.name].push_back(newNode2);
+                        L.qty[{newNode2->a.name, newNode2->a.dosage}] = x.qb;
                     }
                     cout << "All deleted items restored.\n";
                 }
@@ -147,6 +154,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
                 if (curr->a.name == a.NV.name && curr->a.t == a.NV.t)
                 {
                     curr->a = a.OV;
+                    L.qty[{curr->a.name, curr->a.dosage}] = oldQty;
                     break;
                 }
                 curr = curr->next;
@@ -164,6 +172,8 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
                     {
                         Action x = u.peek();
                         u.pop();
+                        oldQty = x.qb;
+                        x.qb = L.qty[{x.NV.name, x.NV.dosage}];
                         r.push(x);
 
                         curr = L.head;
@@ -172,6 +182,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
                             if (curr->a.name == x.NV.name && curr->a.t == x.NV.t)
                             {
                                 curr->a = x.OV;
+                                L.qty[{curr->a.name, curr->a.dosage}] = oldQty;
                                 break;
                             }
                             curr = curr->next;
@@ -208,8 +219,14 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
 
     while (cont)
     {
+        int oldQty;
         Action a = r.peek();
         r.pop();
+        if (a.act == 'u')
+        {
+            oldQty = a.qb;
+            a.qb = L.qty[{a.NV.name, a.NV.dosage}];
+        }
         u.push(a);
 
         switch (a.act)
@@ -318,6 +335,22 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
                         if (vec2.empty())
                             L.hash.erase(curr2->a.name);
 
+                        key = make_pair(curr->a.name, curr->a.dosage);
+                        stillExists = false;
+                        run = L.head;
+                        while (run)
+                        {
+                            if (run->a.name == curr->a.name && run->a.dosage == curr->a.dosage)
+                            {
+                                stillExists = true;
+                                break;
+                            }
+                            run = run->next;
+                        }
+
+                        if (!stillExists)
+                            L.qty.erase(key);
+
                         delete curr2;
                     }
                     cout << "All group deletions redone.\n";
@@ -334,6 +367,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
                 if (curr->a.name == a.OV.name && curr->a.t == a.OV.t)
                 {
                     curr->a = a.NV;
+                    L.qty[{curr->a.name, curr->a.dosage}] = oldQty;
                     break;
                 }
                 curr = curr->next;
@@ -351,6 +385,8 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
                     {
                         Action x = r.peek();
                         r.pop();
+                        oldQty = x.qb;
+                        x.qb = L.qty[{x.NV.name, x.NV.dosage}];
                         u.push(x);
 
                         curr = L.head;
@@ -359,6 +395,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
                             if (curr->a.name == x.OV.name && curr->a.t == x.OV.t)
                             {
                                 curr->a = x.NV;
+                                L.qty[{curr->a.name, curr->a.dosage}] = oldQty;
                                 break;
                             }
                             curr = curr->next;

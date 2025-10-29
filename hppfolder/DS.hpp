@@ -136,8 +136,19 @@ struct LinkedList
         cout << "Enter Dosage: ";
         getline(cin, t->a.dosage);
         int q;
-        cout << "Enter Quantity: ";
-        cin >> q;
+        auto key = make_pair(t->a.name, t->a.dosage);
+
+        if (qty.find(key) == qty.end())
+        {
+            cout << "Enter Quantity: ";
+            cin >> q;
+            qty[key] = q;
+        }
+        else
+        {
+            q = qty[key];
+            cout << "Existing medicine detected. Using previous quantity (" << q << ").\n";
+        }
         a.qb = q;
         cout << "Time (HH MM): ";
         cin >> t->a.t.h >> t->a.t.m;
@@ -184,7 +195,6 @@ struct LinkedList
         }
 
         hash[t->a.name].push_back(t);
-        qty[{t->a.name, t->a.dosage}] = q;
         a.NV = t->a;
         u.push(a);
         cout << "Medicine added successfully!\n";
@@ -444,6 +454,7 @@ struct LinkedList
             cin >> op;
             if (op == 'y' || op == 'Y')
             {
+                c.qb = qty[{r->a.name, r->a.dosage}];
                 int newQty;
                 cout << "Enter new quantity: ";
                 cin >> newQty;
