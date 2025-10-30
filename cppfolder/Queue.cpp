@@ -80,9 +80,37 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
                 exitRequested = true;
                 break;
             }
-            else
+             else if (taken == 'n' || taken == 'N')
             {
-                cout << "Skipped for now.\n";
+            
+                m.snoozeCount++;
+                if (m.snoozeCount >= 3)
+                {
+                    cout << "Snoozed 3 times already! Removing medicine from today's list.\n";
+                    todayQ.dequeue();
+                }
+                else
+                {
+                    cout << "Snoozed! Will remind again after 20 minutes (" 
+                         << 3 - m.snoozeCount << " snoozes left).\n";
+
+                
+                    m.t.m += 20;
+                    if (m.t.m >= 60)
+                    {
+                        m.t.m -= 60;
+                        m.t.h++;
+                        if (m.t.h >= 24)
+                            m.t.h = 0;
+                    }
+
+                    todayQ.dequeue();
+                    todayQ.enqueue(m); 
+                }
+            }
+         else
+            {
+                cout << "Invalid choice. Skipping.\n";
             }
         }
 
@@ -91,4 +119,5 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
 
     if (!exitRequested)
         cout << "\nAll today's medicines are taken!\n";
+
 }
