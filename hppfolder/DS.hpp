@@ -492,7 +492,7 @@ struct LinkedList
         cout << "----------------------------\n";
     }
 
-    void redqty(const string &name, int q = 1)
+    void redqty(const string &name, const string &dosage)
     {
         for (auto &[key, val] : qty)
         {
@@ -505,7 +505,7 @@ struct LinkedList
                     return;
                 }
 
-                val = max(0, val - q);
+                val = max(0, val - 1);
 
                 if (val == 0)
                 {
