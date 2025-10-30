@@ -80,7 +80,7 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
                 exitRequested = true;
                 break;
             }
-             else if (taken == 'n' || taken == 'N')
+             else 
             {
             
                 m.snoozeCount++;
@@ -121,3 +121,4 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
         cout << "\nAll today's medicines are taken!\n";
 
 }
+
