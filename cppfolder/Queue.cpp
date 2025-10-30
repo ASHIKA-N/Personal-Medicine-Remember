@@ -36,7 +36,7 @@ Queue buildTodayQueue(const LinkedList &L)
         r = r->next;
     }
 
-    cout << "Today's medicines enqueued: " << todayQ.size() << "\n";
+    cout << "No of medicines to take today: " << todayQ.size() << "\n";
     return todayQ;
 }
 
@@ -62,16 +62,21 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
 
             cout << "\nYou can exit anytime by pressing 'e'.\n";
             char taken;
-            cout << "Mark as taken (y/n) or 'e' to exit: ";
-            cin >> taken;
-            if (taken == 'y' || taken == 'Y')
+            while (true)
             {
-                L.redqty(m.name, m.dosage);
+                cout << "Mark as taken (y/n) or 'e' to exit: ";
+                cin >> taken;
+                taken = tolower(taken);
+                if (taken == 'y' || taken == 'n' || taken == 'e')
+                    break;
+                cout << "Invalid choice. Please enter y, n, or e.\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
             if (taken == 'y' || taken == 'Y')
             {
+                L.redqty(m.name, m.dosage);
                 todayQ.dequeue();
                 cout << "Medicine marked as taken.\n";
             }
@@ -80,44 +85,58 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
                 exitRequested = true;
                 break;
             }
-             else if (taken == 'n' || taken == 'N')
+            else
             {
-            
-                m.snoozeCount++;
-                if (m.snoozeCount >= 3)
+                cout << "Snoozed! Will remind again after 20 minutes. Press 'e' anytime to exit.\n";
+                for (int i = 0; i < 20 * 60; ++i)
                 {
-                    cout << "Snoozed 3 times already! Removing medicine from today's list.\n";
-                    todayQ.dequeue();
-                }
-                else
-                {
-                    cout << "Snoozed! Will remind again after 20 minutes (" 
-                         << 3 - m.snoozeCount << " snoozes left).\n";
-
-                
-                    m.t.m += 20;
-                    if (m.t.m >= 60)
+                    if (_kbhit())
                     {
-                        m.t.m -= 60;
-                        m.t.h++;
-                        if (m.t.h >= 24)
-                            m.t.h = 0;
+                        char c = _getch();
+                        if (c == 'e' || c == 'E')
+                        {
+                            cout << "\nExiting snooze early.\n";
+                            exitRequested = true;
+                            break;
+                        }
                     }
-
-                    todayQ.dequeue();
-                    todayQ.enqueue(m); 
+                    if (i % 60 == 0 && i > 0)
+                        cout << (20 - i / 60) << " minutes left...\n";
+                    this_thread::sleep_for(chrono::seconds(1));
                 }
-            }
-         else
-            {
-                cout << "Invalid choice. Skipping.\n";
+
+                if (exitRequested)
+                    break;
+
+                continue;
             }
         }
+        else
+        {
+            cout << "\nNext medicine (" << m.name << ") at ";
+            m.t.disp();
+            cout << "\n(Press 'e' anytime to exit.)\n";
 
-        this_thread::sleep_for(chrono::seconds(30));
+            for (int i = 0; i < 30 && !exitRequested; ++i)
+            {
+                if (_kbhit())
+                {
+                    char c = _getch();
+                    if (c == 'e' || c == 'E')
+                    {
+                        cout << "\nExit requested.\n";
+                        exitRequested = true;
+                        break;
+                    }
+                }
+                this_thread::sleep_for(chrono::seconds(1));
+            }
+        }
     }
 
     if (!exitRequested)
         cout << "\nAll today's medicines are taken!\n";
-
+    else
+        cout << "\nSession ended. " << todayQ.size()
+             << " medicine(s) still remaining today.\n";
 }

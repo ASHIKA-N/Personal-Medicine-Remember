@@ -83,7 +83,6 @@ struct Med
     Time t;
     Date exp;
     vector<int> dy;
-    int snoozeCount = 0;
 
     Med() : name(""), dosage(""), t(0, 0), exp(1, 1, 2000), dy({}) {}
 
