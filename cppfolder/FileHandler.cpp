@@ -40,7 +40,8 @@ void loadFromFile(LinkedList &L)
         getline(ss, expStr, '|');
         getline(ss, daysStr, '|');
 
-        stringstream(qtyStr) >> m.qty;
+        int qty = 0;
+        stringstream(qtyStr) >> qty;
         stringstream(timeStr) >> m.t.h >> m.t.m;
         stringstream(expStr) >> m.exp.d >> m.exp.m >> m.exp.y;
 
@@ -70,6 +71,7 @@ void loadFromFile(LinkedList &L)
         }
 
         L.hash[m.name].push_back(node);
+        L.qty[{m.name, m.dosage}] = qty; // store qty in map
     }
 
     file.close();
