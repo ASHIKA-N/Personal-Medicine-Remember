@@ -71,7 +71,7 @@ void loadFromFile(LinkedList &L)
         }
 
         L.hash[m.name].push_back(node);
-        L.qty[{m.name, m.dosage}] = qty; // store qty in map
+        L.qty[{m.name, m.dosage}] = qty;
     }
 
     file.close();
