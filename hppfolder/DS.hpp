@@ -575,7 +575,8 @@ struct LinkedList
         {
             if (key.first == name)
             {
-                val += 10;
+                cout << "Enter new quantity for " << name << " (dosage: " << key.second << "): ";
+                cin >> val;
                 cout << "Quantity restocked to " << val << endl;
                 return;
             }
