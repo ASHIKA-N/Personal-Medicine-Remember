@@ -23,7 +23,7 @@ void expiry(LinkedList *L, int e)
     currentDate.y = static_cast<int>(ymd.year());
 
     Stack dummy;
-
+    bool none = true;
     while (n)
     {
         char opt;
@@ -32,6 +32,7 @@ void expiry(LinkedList *L, int e)
 
         if (diff <= 0)
         {
+            none = false;
             cout << "\nMedicine expired\n";
             cout << "Name: " << n->a.name << " at ";
             n->a.t.disp();
@@ -50,6 +51,7 @@ void expiry(LinkedList *L, int e)
         }
         else if (diff <= e)
         {
+            none = false;
             cout << "\nMedicine will expire in " << diff << " day(s):\n";
             cout << "Name: " << n->a.name << " at ";
 
@@ -65,6 +67,7 @@ void expiry(LinkedList *L, int e)
 
         n = next;
     }
-
+    if (none)
+        cout << "No medicines expiring within " << e << " days.\n";
     cout << "\nExpiry check complete.\n";
 }
