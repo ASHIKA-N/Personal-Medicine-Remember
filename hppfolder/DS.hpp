@@ -352,10 +352,20 @@ struct LinkedList
             cout << "No medicine named \"" << name << "\" found.\n";
             return;
         }
+
+        int count = hash[name].size();
+        cout << "\n"
+             << count << " medicine(s) found for \"" << name << "\":\n";
+        cout << "------------------------------------------\n";
+
+        int i = 1;
         for (Node *n : hash[name])
         {
-            cout << "\nFound\n";
+            cout << "[" << i++ << "] ";
             n->a.disp();
+            auto key = make_pair(n->a.name, n->a.dosage);
+            cout << "Quantity: " << qty[key] << endl;
+            cout << "------------------------------------------\n";
         }
     }
 
@@ -402,6 +412,28 @@ struct LinkedList
                 cout << "Enter new name: ";
                 getline(cin, r->a.name);
                 hash[r->a.name].push_back(r);
+                auto oldKey = make_pair(c.OV.name, c.OV.dosage);
+                auto newKey = make_pair(r->a.name, r->a.dosage);
+
+                if (oldKey != newKey)
+                {
+                    int oldQty = qty[oldKey];
+
+                    bool stillUsed = false;
+                    for (Node *tmp = head; tmp; tmp = tmp->next)
+                    {
+                        if (tmp != r && tmp->a.name == c.OV.name && tmp->a.dosage == c.OV.dosage)
+                        {
+                            stillUsed = true;
+                            break;
+                        }
+                    }
+
+                    if (!stillUsed)
+                        qty.erase(oldKey);
+
+                    qty[newKey] = oldQty;
+                }
             }
 
             cout << "Change time? (y/n): ";
@@ -417,8 +449,28 @@ struct LinkedList
             cin.ignore();
             if (op == 'y' || op == 'Y')
             {
-                cout << "Enter dosage: ";
+                auto oldKey = make_pair(r->a.name, c.OV.dosage);
+                auto oldIt = qty.find(oldKey);
+                int oldQty = (oldIt != qty.end()) ? oldIt->second : 0;
+
+                cout << "Enter new dosage: ";
                 getline(cin, r->a.dosage);
+
+                auto newKey = make_pair(r->a.name, r->a.dosage);
+                qty[newKey] = oldQty;
+
+                bool stillUsed = false;
+                for (Node *tmp = head; tmp; tmp = tmp->next)
+                {
+                    if (tmp != r && tmp->a.name == oldKey.first && tmp->a.dosage == oldKey.second)
+                    {
+                        stillUsed = true;
+                        break;
+                    }
+                }
+
+                if (!stillUsed && oldIt != qty.end())
+                    qty.erase(oldIt);
             }
 
             cout << "Change days? (y/n): ";

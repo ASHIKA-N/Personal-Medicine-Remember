@@ -153,44 +153,39 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
             {
                 if (curr->a.name == a.NV.name && curr->a.t == a.NV.t)
                 {
+                    if (a.NV.name != a.OV.name)
+                    {
+                        auto &oldVec = L.hash[a.NV.name];
+                        oldVec.erase(remove(oldVec.begin(), oldVec.end(), curr), oldVec.end());
+                        if (oldVec.empty())
+                            L.hash.erase(a.NV.name);
+                        L.hash[a.OV.name].push_back(curr);
+                    }
+
+                    auto oldKey = make_pair(a.OV.name, a.OV.dosage);
+                    auto newKey = make_pair(a.NV.name, a.NV.dosage);
+
+                    int oldQtyVal = L.qty.count(newKey) ? L.qty[newKey] : a.qb;
+                    L.qty[oldKey] = oldQtyVal;
+
+                    bool stillUsed = false;
+                    for (Node *tmp = L.head; tmp; tmp = tmp->next)
+                    {
+                        if (tmp != curr && tmp->a.name == a.NV.name && tmp->a.dosage == a.NV.dosage)
+                        {
+                            stillUsed = true;
+                            break;
+                        }
+                    }
+                    if (!stillUsed)
+                        L.qty.erase(newKey);
+
                     curr->a = a.OV;
-                    L.qty[{curr->a.name, curr->a.dosage}] = oldQty;
                     break;
                 }
                 curr = curr->next;
             }
             cout << "Undo update -> Reverted last alteration.\n";
-
-            if (!u.empty() && u.peek().act == 'u')
-            {
-                char o;
-                cout << "Detected multiple alterations. Undo all? (y for all): ";
-                cin >> o;
-                if (o == 'y' || o == 'Y')
-                {
-                    while (!u.empty() && u.peek().act == 'u')
-                    {
-                        Action x = u.peek();
-                        u.pop();
-                        oldQty = x.qb;
-                        x.qb = L.qty[{x.NV.name, x.NV.dosage}];
-                        r.push(x);
-
-                        curr = L.head;
-                        while (curr)
-                        {
-                            if (curr->a.name == x.NV.name && curr->a.t == x.NV.t)
-                            {
-                                curr->a = x.OV;
-                                L.qty[{curr->a.name, curr->a.dosage}] = oldQty;
-                                break;
-                            }
-                            curr = curr->next;
-                        }
-                    }
-                    cout << "All alterations reverted.\n";
-                }
-            }
             break;
         }
         }
@@ -366,44 +361,39 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
             {
                 if (curr->a.name == a.OV.name && curr->a.t == a.OV.t)
                 {
+                    if (a.OV.name != a.NV.name)
+                    {
+                        auto &oldVec = L.hash[a.OV.name];
+                        oldVec.erase(remove(oldVec.begin(), oldVec.end(), curr), oldVec.end());
+                        if (oldVec.empty())
+                            L.hash.erase(a.OV.name);
+                        L.hash[a.NV.name].push_back(curr);
+                    }
+
+                    auto oldKey = make_pair(a.OV.name, a.OV.dosage);
+                    auto newKey = make_pair(a.NV.name, a.NV.dosage);
+
+                    int oldQtyVal = L.qty.count(oldKey) ? L.qty[oldKey] : a.qb;
+                    L.qty[newKey] = oldQtyVal;
+
+                    bool stillUsed = false;
+                    for (Node *tmp = L.head; tmp; tmp = tmp->next)
+                    {
+                        if (tmp != curr && tmp->a.name == a.OV.name && tmp->a.dosage == a.OV.dosage)
+                        {
+                            stillUsed = true;
+                            break;
+                        }
+                    }
+                    if (!stillUsed)
+                        L.qty.erase(oldKey);
+
                     curr->a = a.NV;
-                    L.qty[{curr->a.name, curr->a.dosage}] = oldQty;
                     break;
                 }
                 curr = curr->next;
             }
             cout << "Redo update -> Reapplied alteration.\n";
-
-            if (!r.empty() && r.peek().act == 'u')
-            {
-                char o;
-                cout << "Multiple alterations detected. Redo all? (y for all): ";
-                cin >> o;
-                if (o == 'y' || o == 'Y')
-                {
-                    while (!r.empty() && r.peek().act == 'u')
-                    {
-                        Action x = r.peek();
-                        r.pop();
-                        oldQty = x.qb;
-                        x.qb = L.qty[{x.NV.name, x.NV.dosage}];
-                        u.push(x);
-
-                        curr = L.head;
-                        while (curr)
-                        {
-                            if (curr->a.name == x.OV.name && curr->a.t == x.OV.t)
-                            {
-                                curr->a = x.NV;
-                                L.qty[{curr->a.name, curr->a.dosage}] = oldQty;
-                                break;
-                            }
-                            curr = curr->next;
-                        }
-                    }
-                    cout << "All alterations redone.\n";
-                }
-            }
             break;
         }
         }
