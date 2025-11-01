@@ -14,29 +14,66 @@ static string sanitize(const string &s)
     return out;
 }
 
-void saveMedToFile(const Med &m, int qty)
+void loadFromFile(LinkedList &L)
 {
-    ofstream file("med_data.txt", ios::app);
+    ifstream file("med_data.txt");
     if (!file.is_open())
     {
-        cout << "Error opening file for writing.\n";
+        cout << "[Info] No medicine file found. Starting fresh.\n";
         return;
     }
 
-    file << sanitize(m.name) << "|"
-         << sanitize(m.dosage) << "|"
-         << qty << "|"
-         << m.t.h << " " << m.t.m << "|"
-         << m.exp.d << " " << m.exp.m << " " << m.exp.y << "|";
-
-    for (size_t i = 0; i < m.dy.size(); i++)
+    string line;
+    while (getline(file, line))
     {
-        file << m.dy[i];
-        if (i != m.dy.size() - 1)
-            file << ",";
+        if (line.empty())
+            continue;
+
+        stringstream ss(line);
+        Med m;
+        string qtyStr, timeStr, expStr, daysStr;
+
+        getline(ss, m.name, '|');
+        getline(ss, m.dosage, '|');
+        getline(ss, qtyStr, '|');
+        getline(ss, timeStr, '|');
+        getline(ss, expStr, '|');
+        getline(ss, daysStr, '|');
+
+        stringstream(qtyStr) >> m.qty;
+        stringstream(timeStr) >> m.t.h >> m.t.m;
+        stringstream(expStr) >> m.exp.d >> m.exp.m >> m.exp.y;
+
+        m.dy.clear();
+        string num;
+        stringstream ds(daysStr);
+        while (getline(ds, num, ','))
+        {
+            if (!num.empty())
+                m.dy.push_back(stoi(num));
+        }
+
+        Node *node = new Node{m, nullptr};
+
+        if (!L.head || m.t < L.head->a.t)
+        {
+            node->next = L.head;
+            L.head = node;
+        }
+        else
+        {
+            Node *r = L.head;
+            while (r->next && !(m.t < r->next->a.t))
+                r = r->next;
+            node->next = r->next;
+            r->next = node;
+        }
+
+        L.hash[m.name].push_back(node);
     }
-    file << "\n";
+
     file.close();
+    cout << "[Info] Medicines loaded successfully.\n";
 }
 
 void commitToFile(const LinkedList &L)
