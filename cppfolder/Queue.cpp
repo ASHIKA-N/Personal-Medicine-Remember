@@ -3,6 +3,7 @@
 #include <thread>
 #include <conio.h>
 #include <limits>
+#include <algorithm>
 #include "../hppfolder/Queue.hpp"
 
 using namespace std;
@@ -40,11 +41,22 @@ Queue buildTodayQueue(const LinkedList &L)
     return todayQ;
 }
 
+bool exitRequested()
+{
+    if (_kbhit())
+    {
+        char c = _getch();
+        if (c == 'e' || c == 'E')
+            return true;
+    }
+    return false;
+}
+
 void reminderCheck(Queue &todayQ, LinkedList &L)
 {
-    bool exitRequested = false;
+    bool eFlag = false;
 
-    while (!todayQ.empty() && !exitRequested)
+    while (!todayQ.empty() && !eFlag)
     {
         Med m = todayQ.peek();
 
@@ -74,38 +86,37 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
 
-            if (taken == 'y' || taken == 'Y')
+            if (taken == 'y')
             {
                 L.redqty(m.name, m.dosage);
                 todayQ.dequeue();
                 cout << "Medicine marked as taken.\n";
             }
-            else if (taken == 'e' || taken == 'E')
+            else if (taken == 'e')
             {
-                exitRequested = true;
+                eFlag = true;
                 break;
             }
             else
             {
                 cout << "Snoozed! Will remind again after 20 minutes. Press 'e' anytime to exit.\n";
-                for (int i = 0; i < 20 * 60; ++i)
+                for (int minute = 0; minute < 20 && !eFlag; ++minute)
                 {
-                    if (_kbhit())
+                    for (int sec = 0; sec < 60; ++sec)
                     {
-                        char c = _getch();
-                        if (c == 'e' || c == 'E')
+                        if (exitRequested())
                         {
                             cout << "\nExiting snooze early.\n";
-                            exitRequested = true;
+                            eFlag = true;
                             break;
                         }
+                        this_thread::sleep_for(chrono::seconds(1));
                     }
-                    if (i % 60 == 0 && i > 0)
-                        cout << (20 - i / 60) << " minutes left...\n";
-                    this_thread::sleep_for(chrono::seconds(1));
+                    if (!eFlag)
+                        cout << (20 - minute - 1) << " minutes left...\n";
                 }
 
-                if (exitRequested)
+                if (eFlag)
                     break;
 
                 continue;
@@ -117,7 +128,7 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
             m.t.disp();
             cout << "\n(Press 'e' anytime to exit.)\n";
 
-            for (int i = 0; i < 30 && !exitRequested; ++i)
+            for (int i = 0; i < 30 && !eFlag; ++i)
             {
                 if (_kbhit())
                 {
@@ -125,7 +136,7 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
                     if (c == 'e' || c == 'E')
                     {
                         cout << "\nExit requested.\n";
-                        exitRequested = true;
+                        eFlag = true;
                         break;
                     }
                 }
@@ -134,7 +145,7 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
         }
     }
 
-    if (!exitRequested)
+    if (!eFlag)
         cout << "\nAll today's medicines are taken!\n";
     else
         cout << "\nSession ended. " << todayQ.size()
