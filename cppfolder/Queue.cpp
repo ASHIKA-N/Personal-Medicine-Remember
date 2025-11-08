@@ -130,15 +130,11 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
 
             for (int i = 0; i < 30 && !eFlag; ++i)
             {
-                if (_kbhit())
+                if (exitRequested())
                 {
-                    char c = _getch();
-                    if (c == 'e' || c == 'E')
-                    {
-                        cout << "\nExit requested.\n";
-                        eFlag = true;
-                        break;
-                    }
+                    cout << "\nExit requested.\n";
+                    eFlag = true;
+                    break;
                 }
                 this_thread::sleep_for(chrono::seconds(1));
             }
