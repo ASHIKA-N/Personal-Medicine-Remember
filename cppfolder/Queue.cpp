@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <limits>
 #include <algorithm>
+#include <fstream>
 #include "../hppfolder/Queue.hpp"
 
 using namespace std;
@@ -52,9 +53,19 @@ bool exitRequested()
     return false;
 }
 
-void reminderCheck(Queue &todayQ, LinkedList &L)
+void reminderCheck(Queue &todayQ, LinkedList &L, const string &username)
 {
     bool eFlag = false;
+    vector<Med> missed;
+
+    string logFileName = username + "_missed_log.txt";
+
+    ofstream logFile(logFileName, ios::app);
+    if (!logFile)
+    {
+        cerr << "Error opening missed_log.txt\n";
+        return;
+    }
 
     while (!todayQ.empty() && !eFlag)
     {
@@ -99,8 +110,9 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
             }
             else
             {
+                int skipCount = 0;
                 cout << "Snoozed! Will remind again after 20 minutes. Press 'e' anytime to exit.\n";
-                for (int minute = 0; minute < 20 && !eFlag; ++minute)
+                for (int minute = 0; minute < 20 && !eFlag && skipCount < 3; ++minute)
                 {
                     for (int sec = 0; sec < 60; ++sec)
                     {
@@ -114,10 +126,18 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
                     }
                     if (!eFlag)
                         cout << (20 - minute - 1) << " minutes left...\n";
+                    ++skipCount;
                 }
 
                 if (eFlag)
                     break;
+
+                missed.push_back(m);
+                todayQ.dequeue();
+                cout << "Medicine marked as missed.\n";
+                logFile << m.name << " | " << m.dosage << " | ";
+                logFile << (m.t.h < 10 ? "0" : "") << m.t.h << ":"
+                        << (m.t.m < 10 ? "0" : "") << m.t.m << "\n";
 
                 continue;
             }
@@ -138,6 +158,21 @@ void reminderCheck(Queue &todayQ, LinkedList &L)
                 }
                 this_thread::sleep_for(chrono::seconds(1));
             }
+        }
+    }
+
+    if (eFlag)
+    {
+        while (!todayQ.empty())
+        {
+            missed.push_back(todayQ.dequeue());
+        }
+
+        for (const auto &m : missed)
+        {
+            logFile << m.name << " | " << m.dosage << " | ";
+            logFile << (m.t.h < 10 ? "0" : "") << m.t.h << ":"
+                    << (m.t.m < 10 ? "0" : "") << m.t.m << "\n";
         }
     }
 

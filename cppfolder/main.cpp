@@ -5,7 +5,7 @@
 #include "../hppfolder/Expiry.hpp"
 #include "../hppfolder/Queue.hpp"
 #include "../hppfolder/Stack.hpp"
-#include "../hppfolder/login.hpp"
+#include "../hppfolder/Login.hpp"
 using namespace std;
 
 void menu()
@@ -161,7 +161,7 @@ int main()
             }
             expiry(&L, days);
             Queue todayQ = buildTodayQueue(L);
-            reminderCheck(todayQ, L);
+            reminderCheck(todayQ, L, log.getUser());
             commitToFile(L, log.getUser());
             cout << "Session Complete\nExiting\n";
             return 0;
