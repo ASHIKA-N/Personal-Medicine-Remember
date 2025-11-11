@@ -14,12 +14,14 @@ static string sanitize(const string &s)
     return out;
 }
 
-void loadFromFile(LinkedList &L)
+void loadFromFile(LinkedList &L, const string &username)
 {
-    ifstream file("med_data.txt");
+    string filename = username + "_data.txt";
+    ifstream file(filename);
     if (!file.is_open())
     {
-        cout << "[Info] No medicine file found. Starting fresh.\n";
+        cout << "[Info] No medicine file for " << username
+             << ". Starting fresh.\n";
         return;
     }
 
@@ -78,11 +80,10 @@ void loadFromFile(LinkedList &L)
     cout << "[Info] Medicines loaded successfully.\n";
 }
 
-void commitToFile(const LinkedList &L)
+void commitToFile(const LinkedList &L, const string &username)
 {
-    const string mainFile = "med_data.txt";
-    const string tempFile = "temp_med_data.txt";
-
+    string mainFile = username + "_data.txt";
+    string tempFile = username + "_temp.txt";
     ofstream out(tempFile, ios::trunc);
     if (!out.is_open())
     {

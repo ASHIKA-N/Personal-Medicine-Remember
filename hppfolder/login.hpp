@@ -1,14 +1,18 @@
 #pragma once
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<functional>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <functional>
 using namespace std;
-class Login{
+class Login
+{
 private:
-string file="user.txt";
-string hashPassword(const string &password);
+    string file = "user.txt";
+    string currentUser = "";
+    string hashPassword(const string &password);
+
 public:
-void regist();
-bool login();
+    void regist();
+    bool login();
+    string getUser() const { return currentUser; }
 };

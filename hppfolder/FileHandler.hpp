@@ -5,5 +5,5 @@
 struct Med;
 struct LinkedList;
 
-void loadFromFile(LinkedList &L);
-void commitToFile(const LinkedList &L);
+void loadFromFile(LinkedList &L, const string &username);
+void commitToFile(const LinkedList &L, const string &username);

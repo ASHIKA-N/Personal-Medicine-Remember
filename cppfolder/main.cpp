@@ -12,43 +12,52 @@ void menu()
 {
     cout << "\n=== Personal Medication Reminder ===\n";
     cout << "Choices\n";
-    cout << "1. Insert New Med\n";
-    cout << "2. Delete a Med by Name and Time\n";
-    cout << "3. Delete all Meds of a Particular Name\n";
-    cout << "4. Alter a Med\n";
-    cout << "5. View Med Schedule\n";
+    cout << "1. View Med Schedule\n";
+    cout << "2. Insert New Med\n";
+    cout << "3. Delete a Med by Name and Time\n";
+    cout << "4. Delete all Meds of a Particular Name\n";
+    cout << "5. Alter a Med\n";
     cout << "6. Search for a Med\n";
     cout << "7. Undo Last Operation\n";
     cout << "8. Redo Last Undone Operation\n";
-    cout << "9. View quantity";
+    cout << "9. View quantity\n";
     cout << "10. Exit\n";
 }
 
 int main()
 {
-    int ch,ch1;
-    bool login=false;
+    int ch, ch1;
+    bool login = false;
     LinkedList L;
     Queue todayQueue;
     Stack undo, redo;
     Login log;
-    loadFromFile(L);
-    cout<<"1.Login\n2.Register\n Choice: ";
-    cin>>ch1;
-    if(choice==1){
-        login=log.login();
+    loadFromFile(L, log.getUser());
+    cout << "1.Login\n2.Register\n Choice: ";
+    cin >> ch1;
+    if (ch1 == 1)
+    {
+        login = log.login();
     }
-    else if(choice==2){
+    else if (ch1 == 2)
+    {
         log.regist();
-     login=log.login();
-
+        login = log.login();
     }
-    if(!login){
-        cout<<"Exiting..\n";
+    int attempts = 0;
+    while (attempts < 3 && !login)
+    {
+        cout << "Login failed. Try again.\n";
+        login = log.login();
+        attempts++;
+    }
+    if (!login)
+    {
+        cout << "Too many failed attempts. Exiting...\n";
         return 0;
     }
 
-    while (1)
+    while (true)
     {
         menu();
         cout << "Enter choice: ";
@@ -153,7 +162,7 @@ int main()
             expiry(&L, days);
             Queue todayQ = buildTodayQueue(L);
             reminderCheck(todayQ, L);
-            commitToFile(L);
+            commitToFile(L, log.getUser());
             cout << "Session Complete\nExiting\n";
             return 0;
         }
