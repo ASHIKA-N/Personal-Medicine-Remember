@@ -10,6 +10,7 @@ private:
     string file = "user.txt";
     string currentUser = "";
     string hashPassword(const string &password);
+    static string trim(const string &s);
 
 public:
     void regist();

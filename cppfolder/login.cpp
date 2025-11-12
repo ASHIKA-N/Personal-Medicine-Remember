@@ -1,5 +1,12 @@
 #include "../hppfolder/Login.hpp"
 
+string Login::trim(const string &s)
+{
+    size_t start = s.find_first_not_of(" \t\r\n");
+    size_t end = s.find_last_not_of(" \t\r\n");
+    return (start == string::npos) ? "" : s.substr(start, end - start + 1);
+}
+
 string Login::hashPassword(const string &password)
 {
     hash<string> hashing;
@@ -8,9 +15,11 @@ string Login::hashPassword(const string &password)
 
 void Login::regist()
 {
+
     string user, pass;
     cout << "Enter Username: ";
     cin >> user;
+    user = trim(user);
     cout << "Enter Password: ";
     cin >> pass;
 
@@ -45,6 +54,8 @@ void Login::regist()
     {
         cout << "Could not open file!\n";
     }
+
+    currentUser = user;
 }
 
 bool Login::login()
@@ -52,6 +63,7 @@ bool Login::login()
     string user, pass;
     cout << "Enter Username: ";
     cin >> user;
+    user = trim(user);
     cout << "Enter Password: ";
     cin >> pass;
 
