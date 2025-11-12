@@ -32,7 +32,6 @@ int main()
     Queue todayQueue;
     Stack undo, redo;
     Login log;
-    loadFromFile(L, log.getUser());
     cout << "1.Login\n2.Register\n Choice: ";
     cin >> ch1;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -57,6 +56,8 @@ int main()
         cout << "Invalid option/Too many failed attempts. Exiting...\n";
         return 0;
     }
+
+    loadFromFile(L, log.getUser());
 
     while (true)
     {
