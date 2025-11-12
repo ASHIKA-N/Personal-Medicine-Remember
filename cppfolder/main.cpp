@@ -35,6 +35,7 @@ int main()
     loadFromFile(L, log.getUser());
     cout << "1.Login\n2.Register\n Choice: ";
     cin >> ch1;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     if (ch1 == 1)
     {
         login = log.login();
@@ -53,7 +54,7 @@ int main()
     }
     if (!login)
     {
-        cout << "Too many failed attempts. Exiting...\n";
+        cout << "Invalid option/Too many failed attempts. Exiting...\n";
         return 0;
     }
 
@@ -154,11 +155,14 @@ int main()
             cout << "\n--- Expiry Check before Exit ---\n";
             cout << "Enter no. of days to remind before expiry: ";
             cin >> days;
-            while (days < 0)
+            while (cin.fail() || days < 0)
             {
-                cout << "Cannot be negative. Enter again: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Enter a non-negative number: ";
                 cin >> days;
             }
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             expiry(&L, days);
             Queue todayQ = buildTodayQueue(L);
             reminderCheck(todayQ, L, log.getUser());

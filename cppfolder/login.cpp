@@ -17,6 +17,11 @@ void Login::regist()
     string hashpass = hashPassword(pass);
 
     ifstream filecheck(file);
+    if (!filecheck.is_open())
+    {
+        cout << "Error: Could not open user file for reading.\n";
+        return;
+    }
     string u, v;
     while (filecheck >> u >> v)
     {

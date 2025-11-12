@@ -67,6 +67,9 @@ void reminderCheck(Queue &todayQ, LinkedList &L, const string &username)
         return;
     }
 
+    time_t now = time(0);
+    logFile << "\n--- Missed Medicines on " << ctime(&now) << "---\n";
+
     while (!todayQ.empty() && !eFlag)
     {
         Med m = todayQ.peek();
