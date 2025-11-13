@@ -14,3 +14,8 @@ C | 200mg | 20:00
 --- Missed Medicines on Wed Nov 12 17:50:48 2025
 ---
 C | 200mg | 20:00
+
+--- Missed Medicines on Thu Nov 13 21:13:01 2025
+---
+Aprezo | 300mg | 12:00
+C | 200mg | 20:00

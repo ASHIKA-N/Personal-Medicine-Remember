@@ -42,7 +42,6 @@ int main()
     else if (ch1 == 2)
     {
         log.regist();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         login = log.login();
     }
     int attempts = 0;
