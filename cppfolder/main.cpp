@@ -12,15 +12,15 @@ void menu()
 {
     cout << "\n=== Personal Medication Reminder ===\n";
     cout << "Choices\n";
-    cout << "1. View Med Schedule\n";
-    cout << "2. Insert New Med\n";
-    cout << "3. Delete a Med by Name and Time\n";
-    cout << "4. Delete all Meds of a Particular Name\n";
-    cout << "5. Alter a Med\n";
-    cout << "6. Search for a Med\n";
+    cout << "1. View Medicine Schedule\n";
+    cout << "2. Insert New Medicine\n";
+    cout << "3. Delete a Medicine by Name and Time\n";
+    cout << "4. Delete all Medicines of a Particular Name\n";
+    cout << "5. Alter a Medicine\n";
+    cout << "6. Search for a Medicine\n";
     cout << "7. Undo Last Operation\n";
     cout << "8. Redo Last Undone Operation\n";
-    cout << "9. View quantity\n";
+    cout << "9. View Quantity\n";
     cout << "10. Exit\n";
 }
 

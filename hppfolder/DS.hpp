@@ -379,6 +379,11 @@ struct LinkedList
         Action c;
         c.act = 'u';
         Node *r = head;
+        if (!r)
+        {
+            cout << "List is Empty\n";
+            return;
+        }
         while (r)
         {
             r->a.disp();
