@@ -1,4 +1,5 @@
 #include "../hppfolder/Login.hpp"
+#include <limits>
 
 string Login::trim(const string &s)
 {
@@ -22,6 +23,7 @@ void Login::regist()
     user = trim(user);
     cout << "Enter Password: ";
     cin >> pass;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     string hashpass = hashPassword(pass);
 
@@ -54,8 +56,6 @@ void Login::regist()
     {
         cout << "Could not open file!\n";
     }
-
-    currentUser = user;
 }
 
 bool Login::login()
@@ -66,6 +66,7 @@ bool Login::login()
     user = trim(user);
     cout << "Enter Password: ";
     cin >> pass;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     string hashpass = hashPassword(pass);
 

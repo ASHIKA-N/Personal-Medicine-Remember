@@ -234,12 +234,15 @@ struct LinkedList
             if (vec.empty())
                 hash.erase(temp->a.name);
             bool stillExists = false;
-            for (Node *n : hash[temp->a.name])
+            if (hash.find(temp->a.name) != hash.end())
             {
-                if (n->a.dosage == temp->a.dosage)
+                for (Node *n : hash[temp->a.name])
                 {
-                    stillExists = true;
-                    break;
+                    if (n->a.dosage == temp->a.dosage)
+                    {
+                        stillExists = true;
+                        break;
+                    }
                 }
             }
             if (!stillExists)
@@ -267,12 +270,15 @@ struct LinkedList
             if (vec.empty())
                 hash.erase(temp->a.name);
             bool stillExists = false;
-            for (Node *n : hash[temp->a.name])
+            if (hash.find(temp->a.name) != hash.end())
             {
-                if (n->a.dosage == temp->a.dosage)
+                for (Node *n : hash[temp->a.name])
                 {
-                    stillExists = true;
-                    break;
+                    if (n->a.dosage == temp->a.dosage)
+                    {
+                        stillExists = true;
+                        break;
+                    }
                 }
             }
             if (!stillExists)
@@ -395,7 +401,7 @@ struct LinkedList
             char op;
             cout << "Do you want to change any details? (y/n): ";
             cin >> op;
-            cin.ignore();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
             if (op != 'y' && op != 'Y')
             {
@@ -407,7 +413,7 @@ struct LinkedList
 
             cout << "Change medicine name? (y/n): ";
             cin >> op;
-            cin.ignore();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (op == 'y' || op == 'Y')
             {
                 auto &oldVec = hash[c.OV.name];
@@ -443,6 +449,7 @@ struct LinkedList
 
             cout << "Change time? (y/n): ";
             cin >> op;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (op == 'y' || op == 'Y')
             {
                 cout << "Enter hour and min: ";
@@ -451,7 +458,7 @@ struct LinkedList
 
             cout << "Change dosage? (y/n): ";
             cin >> op;
-            cin.ignore();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (op == 'y' || op == 'Y')
             {
                 auto oldKey = make_pair(r->a.name, c.OV.dosage);
@@ -480,6 +487,7 @@ struct LinkedList
 
             cout << "Change days? (y/n): ";
             cin >> op;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (op == 'y' || op == 'Y')
             {
                 r->a.dy.clear();
@@ -506,6 +514,7 @@ struct LinkedList
 
             cout << "Change quantity? (y/n): ";
             cin >> op;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (op == 'y' || op == 'Y')
             {
                 c.qb = qty[{r->a.name, r->a.dosage}];
@@ -517,12 +526,14 @@ struct LinkedList
 
             cout << "Change expiry date? (y/n): ";
             cin >> op;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (op == 'y' || op == 'Y')
             {
                 int d, m, y;
                 cout << "Day Month Year: ";
                 cin >> d >> m >> y;
                 r->a.exp = Date(Date::isValid(d, m, y) ? d : 1, Date::isValid(d, m, y) ? m : 1, Date::isValid(d, m, y) ? y : 2000);
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
 
             c.NV = r->a;
@@ -551,40 +562,42 @@ struct LinkedList
 
     void redqty(const string &name, const string &dosage)
     {
-        for (auto &[key, val] : qty)
+        if (qty.find({name, dosage}) == qty.end())
         {
-            if (key.first == name)
-            {
-                if (val == 0)
-                {
-                    cout << "Medicine already depleted. Restocking...\n";
-                    updqty(name);
-                    return;
-                }
+            cout << "Medicine not found in quantity records. Cannot restock.\n";
+            return;
+        }
+        if (qty[{name, dosage}] == 0)
+        {
+            cout << "Medicine already depleted. Restocking...\n";
+            updqty(name, dosage);
+            return;
+        }
 
-                val = max(0, val - 1);
+        qty[{name, dosage}] = max(0, qty[{name, dosage}] - 1);
 
-                if (val == 0)
-                {
-                    cout << "Medicine depleted. Auto restocking...\n";
-                    updqty(name);
-                }
-                return;
-            }
+        if (qty[{name, dosage}] == 0)
+        {
+            cout << "Medicine depleted. Auto restocking...\n";
+            updqty(name, dosage);
+        }
+        else
+        {
+            cout << "Medicine " << name << " (dosage: " << dosage << ") quantity reduced to " << qty[{name, dosage}] << endl;
         }
     }
 
-    void updqty(const string &name)
+    void updqty(const string &name, const string &dosage)
     {
-        for (auto &[key, val] : qty)
+        if (qty.find({name, dosage}) == qty.end())
         {
-            if (key.first == name)
-            {
-                cout << "Enter new quantity for " << name << " (dosage: " << key.second << "): ";
-                cin >> val;
-                cout << "Quantity restocked to " << val << endl;
-                return;
-            }
+            cout << "Medicine not found in quantity records. Cannot restock.\n";
+            return;
         }
+        cout << "Enter new quantity for " << name << " (dosage: " << dosage << "): ";
+        cin >> qty[{name, dosage}];
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Quantity restocked to " << qty[{name, dosage}] << endl;
+        return;
     }
 };

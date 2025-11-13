@@ -196,6 +196,7 @@ void Undo(Stack &u, Stack &r, LinkedList &L)
         }
         cout << "Continue undoing? (y/n): ";
         cin >> ch;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         if (ch != 'y' && ch != 'Y')
             cont = false;
     }
@@ -330,12 +331,12 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
                         if (vec2.empty())
                             L.hash.erase(curr2->a.name);
 
-                        key = make_pair(curr->a.name, curr->a.dosage);
+                        auto key = make_pair(curr2->a.name, curr2->a.dosage);
                         stillExists = false;
                         run = L.head;
                         while (run)
                         {
-                            if (run->a.name == curr->a.name && run->a.dosage == curr->a.dosage)
+                            if (run->a.name == curr2->a.name && run->a.dosage == curr2->a.dosage)
                             {
                                 stillExists = true;
                                 break;
@@ -404,6 +405,7 @@ void Redo(Stack &r, Stack &u, LinkedList &L)
         }
         cout << "Continue redoing? (y/n): ";
         cin >> ch;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         if (ch != 'y' && ch != 'Y')
             cont = false;
     }

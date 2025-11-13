@@ -73,7 +73,7 @@ struct Date
         return (thisDate - otherDate).count();
     }
 
-    bool operator<=(const Date &other) const { return (*this - other) <= 0; }
+    bool operator<=(const Date &other) const { return (year{y} / m / d) <= (year{other.y} / other.m / other.d); }
 };
 
 struct Med
@@ -113,7 +113,7 @@ struct Med
 
     bool operator==(const Med &other) const
     {
-        return name == other.name && t == other.t;
+        return name == other.name && t == other.t && dosage == other.dosage;
     }
 };
 

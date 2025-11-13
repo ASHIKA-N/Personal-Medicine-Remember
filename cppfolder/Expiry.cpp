@@ -39,9 +39,10 @@ void expiry(LinkedList *L, int e)
             cout << endl;
             cout << "Do you need to refill (y/n): ";
             cin >> opt;
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             if (opt == 'y' || opt == 'Y')
             {
-                L->updqty(n->a.name);
+                L->updqty(n->a.name, n->a.dosage);
                 cout << "Enter new expiry date (dd mm yyyy): ";
                 cin >> n->a.exp.d >> n->a.exp.m >> n->a.exp.y;
                 cout << "Expiry date updated.\n";
@@ -62,15 +63,18 @@ void expiry(LinkedList *L, int e)
             cout << endl;
             cout << "Do you need to refill (y/n): ";
             cin >> opt;
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             if (opt == 'y' || opt == 'Y')
             {
-                L->updqty(n->a.name);
+                L->updqty(n->a.name, n->a.dosage);
             }
         }
 
         n = next;
     }
     if (none)
+    {
         cout << "No medicines expiring within " << e << " days.\n";
+    }
     cout << "\nExpiry check complete.\n";
 }

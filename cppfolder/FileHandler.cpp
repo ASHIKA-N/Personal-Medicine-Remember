@@ -128,6 +128,7 @@ void commitToFile(const LinkedList &L, const string &username)
     catch (const std::filesystem::filesystem_error &e)
     {
         cerr << "[Error] Commit failed, keeping old file: " << e.what() << endl;
-        filesystem::remove(tempFile);
+        if (std::filesystem::exists(tempFile))
+            std::filesystem::remove(tempFile);
     }
 }

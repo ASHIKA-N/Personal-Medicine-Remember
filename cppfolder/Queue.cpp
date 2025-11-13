@@ -67,8 +67,8 @@ void reminderCheck(Queue &todayQ, LinkedList &L, const string &username)
         return;
     }
 
-    time_t now = time(0);
-    logFile << "\n--- Missed Medicines on " << ctime(&now) << "---\n";
+    time_t t = time(0);
+    logFile << "\n--- Missed Medicines on " << ctime(&t) << "---\n";
 
     while (!todayQ.empty() && !eFlag)
     {
@@ -92,6 +92,7 @@ void reminderCheck(Queue &todayQ, LinkedList &L, const string &username)
             {
                 cout << "Mark as taken (y/n) or 'e' to exit: ";
                 cin >> taken;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 taken = tolower(taken);
                 if (taken == 'y' || taken == 'n' || taken == 'e')
                     break;
