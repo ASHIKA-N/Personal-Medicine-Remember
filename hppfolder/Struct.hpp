@@ -20,7 +20,11 @@ struct Time
 
     int toMinutes() const { return h * 60 + m; }
 
-    void disp() const { printf("%02d:%02d", h, m); }
+    void disp() const
+    {
+        cout << setfill('0') << setw(2) << h << ":"
+             << setfill('0') << setw(2) << m;
+    }
 
     bool operator<(const Time &other) const { return toMinutes() < other.toMinutes(); }
     bool operator<=(const Time &other) const { return toMinutes() <= other.toMinutes(); }
